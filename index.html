@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Request private transportation in Boston through a trusted transportation broker. We connect travelers and businesses with licensed third-party providers for airport transfers, private rides, and corporate transportation.">
+    <title>Boston Private Transportation Booking | Airport Transfers, Private Rides & Corporate Transportation</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- GSAP & Lenis Smooth Scroll -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* Variables */
+        :root {
+            --dark-bg: #131416;
+            --light-bg: #f8f9fa;
+            --white: #ffffff;
+            --text-dark: #131416;
+            --text-gray: #6b7280;
+            --border-color: #e5e7eb;
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Reset & Base */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        html.lenis { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+
+        body {
+            background-color: var(--white); color: var(--text-dark);
+            line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 { font-weight: 500; letter-spacing: -0.03em; }
+        h1 { font-size: clamp(3rem, 6vw, 5rem); line-height: 1.1; margin-bottom: 1.5rem; }
+        h2 { font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.2; margin-bottom: 1.5rem; } 
+        h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        p { color: var(--text-gray); font-size: 1.1rem; margin-bottom: 1.5rem; }
+
+        .container { width: 100%; max-width: 1300px; margin: 0 auto; padding: 0 5%; }
+        
+        section { padding: 160px 0; } 
+
+        /* Images & Media */
+        .img-mask {
+            overflow: hidden;
+            border-radius: 32px;
+            margin-top: 40px;
+            margin-bottom: 60px;
+            background-color: var(--light-bg);
+            display: block;
+        }
+        .img-mask img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transform-origin: center;
+        }
+        
+        .image-tall { height: 400px; } 
+        .image-wide { height: 350px; }
+
+        /* Buttons */
+        .btn-pill {
+            display: inline-flex; align-items: center; background: var(--white); color: var(--text-dark);
+            padding: 10px 10px 10px 24px; border-radius: 50px; font-weight: 500; font-size: 1rem;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); border: none; cursor: pointer; text-decoration: none; overflow: hidden;
+        }
+        .btn-pill:hover { transform: scale(1.02); }
+        .btn-pill svg { background: var(--dark-bg); color: var(--white); width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-left: 15px; }
+        .btn-dark { background: var(--dark-bg); color: var(--white); }
+        .btn-dark svg { background: var(--white); color: var(--dark-bg); }
+
+        /* Lists */
+        .minimal-list { list-style: none; padding: 0; margin-bottom: 1.5rem; }
+        .minimal-list li { position: relative; padding-left: 24px; margin-bottom: 12px; color: var(--text-gray); font-size: 1.05rem; }
+        .minimal-list li::before { content: '—'; position: absolute; left: 0; color: var(--text-dark); font-weight: 600; }
+
+        /* Navbar */
+        nav { position: absolute; top: 0; width: 100%; padding: 30px 5%; display: flex; justify-content: space-between; align-items: center; z-index: 100; mix-blend-mode: difference; color: white; }
+        .logo { font-size: 1.5rem; font-weight: 600; letter-spacing: -1px; }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a { color: #fff; font-size: 0.95rem; text-decoration: none; opacity: 0.8; transition: opacity 0.3s; }
+        .nav-links a:hover { opacity: 1; }
+
+        /* ==========================================
+           HERO SECTION (VİDEO OPTİMİZASYONU)
+           ========================================== */
+        .hero-wrapper { position: relative; height: 95vh; margin: 10px; border-radius: 40px; overflow: hidden; background-color: var(--dark-bg); }
+        
+        .hero-bg { 
+            position: absolute; top: -10%; left: 0; width: 100%; height: 120%; /* GSAP Parallax için %120 boy */
+            z-index: 1; will-change: transform; 
+        }
+
+        /* Video Ayarları */
+        .hero-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Videoyu orantısını bozmadan ekrana yayar */
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: var(--dark-bg); /* Yüklenme esnasında siyah arka plan */
+        }
+
+        /* Video Üzeri Cam/Karartma Efekti */
+        .video-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7));
+            z-index: 2; 
+        }
+
+        .hero-content { position: relative; z-index: 3; height: 100%; display: flex; flex-direction: column; justify-content: center; color: var(--white); padding: 0 5%; max-width: 1000px; }
+        .hero-content p { color: rgba(255,255,255,0.9); font-size: 1.25rem; max-width: 700px; margin-bottom: 2rem; }
+        .trust-line { font-size: 0.85rem !important; color: rgba(255,255,255,0.5) !important; margin-top: 20px; letter-spacing: 0.5px; max-width: 100% !important;}
+
+        /* Notice Banner */
+        .notice-banner { background-color: var(--light-bg); padding: 24px 30px; margin: 60px auto 20px; max-width: 1300px; width: 90%; border-radius: 24px; color: var(--text-dark); display: flex; align-items: flex-start; gap: 15px; opacity: 0; }
+        .notice-banner p { margin: 0; color: var(--text-dark); font-size: 0.95rem; line-height: 1.5; }
+        .notice-banner svg { flex-shrink: 0; margin-top: 2px; }
+
+        /* About / How It Works */
+        .how-it-works { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: start; }
+        .steps-container { position: relative; padding-left: 40px; margin-top: 20px; }
+        .svg-line-container { position: absolute; left: 0; top: 10px; bottom: 30px; width: 2px; background: var(--border-color); }
+        .svg-line-progress { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--text-dark); transform-origin: top; transform: scaleY(0); }
+        .step { position: relative; margin-bottom: 60px; opacity: 0; transform: translateY(30px); }
+        .step::before { content: ''; position: absolute; left: -44px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--text-dark); z-index: 2; }
+        .step-num { font-size: 0.85rem; color: var(--text-gray); font-weight: 600; margin-bottom: 5px; letter-spacing: 1px;}
+        .step h4 { font-size: 1.4rem; margin-bottom: 10px; }
+        .step p { margin: 0; font-size: 1.05rem; }
+
+        /* Features Section */
+        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 60px; }
+        .feature-card { background-color: var(--light-bg); padding: 40px; border-radius: 32px; transition: transform 0.4s ease, box-shadow 0.4s ease; will-change: transform; }
+        .feature-card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(0,0,0,0.04); }
+        .feature-card h3 { font-size: 1.3rem; margin-bottom: 15px; }
+        .feature-card p { margin: 0; font-size: 1rem; }
+        .feature-icon { margin-bottom: 25px; }
+        .feature-icon svg { width: 40px; height: 40px; stroke: var(--text-dark); stroke-width: 1.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+        /* ==============================================
+           SERVICES SECTION (Siyah Alan Animasyonu)
+           ============================================== */
+        .services-wrapper { 
+            position: relative; /* Arka planı referans alması için */
+            margin: 80px 10px;  /* Ekran kenarlarından 10px boşluk */
+            padding: 140px 5%;  /* İçerik boşluğu */
+            z-index: 1;
+        }
+        
+        /* Arka plan bağımsız bir katmana alındı, böylece metinler sıkışmaz veya kaymaz */
+        .services-bg {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%); /* Daima tam ortada durur */
+            width: 100%; /* GSAP ile bu değer 70%'den 100%'e anime edilecek */
+            height: 100%;
+            background-color: var(--dark-bg);
+            border-radius: 40px;
+            z-index: -1;
+            will-change: width, border-radius; /* Performans optimizasyonu */
+        }
+
+        .services-content {
+            color: var(--white);
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+        .services-content p { color: #a1a1aa; }
+        .service-intro { max-width: 700px; margin-bottom: 80px; font-size: 1.15rem; }
+        .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 60px; }
+        .service-icon svg { width: 60px; height: 60px; margin-bottom: 30px; stroke-width: 1.5; stroke: var(--white); fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+        /* Split SEO Section */
+        .split-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 120px; align-items: start; } 
+        .split-layout .left-col { position: sticky; top: 120px; }
+        .text-block { margin-bottom: 50px; }
+
+        /* Service Area SVG Graphic */
+        .route-graphic { display: flex; justify-content: center; margin-bottom: 60px; }
+        .route-graphic svg { width: 100%; max-width: 400px; height: auto; stroke: var(--text-dark); fill: none; stroke-linecap: round; stroke-linejoin: round; }
+        .route-path { stroke-dasharray: 8 8; stroke-width: 2; }
+
+        /* FAQ Section */
+        .faq-header { text-align: center; margin-bottom: 80px; }
+        .faq-grid { display: flex; flex-direction: column; gap: 24px; max-width: 900px; margin: 0 auto; }
+        .faq-item { background: var(--light-bg); padding: 40px; border-radius: 32px; }
+        .faq-item h4 { font-size: 1.25rem; margin-bottom: 12px; }
+        .faq-item p { margin: 0; font-size: 1.05rem; color: var(--text-gray); }
+
+        /* Quote Form */
+        .quote-section { background-color: var(--white); }
+        .quote-header { text-align: center; margin-bottom: 60px; max-width: 700px; margin-inline: auto; }
+        .quote-form { background: var(--light-bg); padding: 60px; border-radius: 40px; max-width: 900px; margin: 0 auto; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 30px; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        .form-group label { display: block; margin-bottom: 10px; font-size: 0.85rem; font-weight: 600; color: var(--text-gray); text-transform: uppercase; letter-spacing: 1px; }
+        .form-group input, .form-group textarea { width: 100%; padding: 18px 20px; border: 1px solid transparent; border-radius: 16px; font-size: 1rem; background: var(--white); transition: border-color 0.3s ease; }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--text-dark); }
+        .form-reassurance { font-size: 0.85rem; text-align: center; margin-top: 25px; color: var(--text-gray); max-width: 700px; margin-inline: auto; }
+
+        /* Footer */
+        .footer-wrapper { padding: 0 10px 10px; }
+        footer { background-color: var(--dark-bg); color: var(--white); padding: 100px 5% 40px; border-radius: 40px; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 60px; margin-bottom: 80px; }
+        .footer-col h4 { font-size: 1.2rem; margin-bottom: 24px; color: #fff; }
+        .footer-col p, .footer-col a { color: #a1a1aa; font-size: 1rem; margin-bottom: 15px; display: block; text-decoration: none; transition: color 0.3s; }
+        .footer-col a:hover { color: var(--white); }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; display: flex; flex-direction: column; gap: 15px; color: #a1a1aa; font-size: 0.85rem; }
+        .footer-bottom-flex { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 10px; }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .how-it-works, .split-layout { grid-template-columns: 1fr; gap: 60px; }
+            .features-grid, .service-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
+            .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+            .split-layout .left-col { position: relative; top: 0; }
+            nav .nav-links { display: none; }
+            .image-tall { height: 350px; }
+            section { padding: 100px 0; }
+            .services-wrapper { margin: 60px 10px; padding: 100px 5%; }
+        }
+        @media (max-width: 768px) {
+            .hero-wrapper { height: 85vh; border-radius: 30px; }
+            .features-grid, .service-grid, .form-grid { grid-template-columns: 1fr; }
+            .quote-form { padding: 30px; border-radius: 30px; }
+            .services-wrapper { padding: 80px 5%; }
+            .services-bg { border-radius: 30px; }
+            .footer-bottom-flex { flex-direction: column; gap: 15px; text-align: left; align-items: flex-start; }
+            .faq-item { padding: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="gsap-nav">
+        <div class="logo">BostonBroker</div>
+        <div class="nav-links">
+            <a href="#about">About Us</a>
+            <a href="#services">Services</a>
+            <a href="#quote">Request Quote</a>
+        </div>
+        <a href="#quote" class="btn-pill" style="mix-blend-mode: normal;">
+            Get Started 
+            <svg width="14" height="14" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+        </a>
+    </nav>
+
+    <!-- ==========================================
+         HERO SECTION (VİDEO OPTİMİZASYONU)
+         ========================================== -->
+    <div class="hero-wrapper">
+        <div class="hero-bg">
+            <!-- Yazıların okunabilirliği için karanlık degrade katman -->
+            <div class="video-overlay"></div>
+            
+            <!-- Video: autoplay özelliği JS ile kontrol edilecek -->
+            <!-- poster: Sayfa yüklenene kadar veya video oynatılmadığında görünecek görsel -->
+            <!-- NOT: src ve poster yollarını kendi dosyalarınıza göre değiştirin -->
+            <video id="heroVideo" muted loop playsinline class="hero-video" poster="maserati-kapak.jpg">
+                <source src="maserati-video.mp4" type="video/mp4">
+                Tarayıcınız video etiketini desteklemiyor.
+            </video>
+        </div>
+        
+        <div class="hero-content">
+            <h1 class="gsap-hero-title">Private Transportation<br>Booking in Boston</h1>
+            <p class="gsap-hero-text">We connect travelers, executives, and groups with licensed third-party transportation providers for airport transfers, private rides, and corporate transportation across Boston and surrounding areas.</p>
+            <div class="gsap-hero-btn" style="margin-top: 1rem;">
+                <a href="#quote" class="btn-pill">
+                    Request a Quote 
+                    <svg width="14" height="14" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                </a>
+                <p class="trust-line">Transportation brokerage service only — all rides are fulfilled by independent third-party providers.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Important Notice Banner -->
+    <div class="notice-banner gsap-notice">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+        <p><strong>IMPORTANT NOTICE:</strong> We operate strictly as a transportation broker and do not own or operate vehicles. All bookings must be requested at least 48 hours in advance. Porter or baggage assistance is not provided. All transportation services are fulfilled by independent third-party providers.</p>
+    </div>
+
+    <!-- About / How It Works -->
+    <section id="about" class="container">
+        <div class="how-it-works">
+            <div class="about-text gsap-fade-up">
+                <h2>Arranged perfectly in 3 simple steps</h2>
+                <p>We help simplify private transportation booking in Boston by connecting customers with licensed third-party transportation providers. Instead of searching through multiple transportation companies, clients can submit one request and our team helps coordinate a suitable match.</p>
+                <p>Whether you need airport transportation to Boston Logan International Airport, private city transportation, or corporate travel coordination, our brokerage model helps streamline the process.</p>
+                
+                <div class="img-mask image-wide gsap-img-reveal">
+                    <img src="https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=2115&auto=format&fit=crop" alt="Premium luxury vehicle interior" class="gsap-img-scale">
+                </div>
+            </div>
+            
+            <div class="steps-container">
+                <div class="svg-line-container"><div class="svg-line-progress"></div></div>
+
+                <div class="step">
+                    <div class="step-num">STEP 01</div>
+                    <h4>Request a Quote</h4>
+                    <p>Submit your travel details, preferred date and time, number of passengers, luggage count, and any special notes.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">STEP 02</div>
+                    <h4>We Match You</h4>
+                    <p>We review your request and connect you with a licensed transportation provider from our network that best fits your needs.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">STEP 03</div>
+                    <h4>Transportation Arranged</h4>
+                    <p>Once your request is confirmed, the assigned third-party transportation provider fulfills the ride.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Clients Use Our Network -->
+    <section class="container">
+        <div class="gsap-fade-up text-center" style="max-width: 800px; margin: 0 auto 20px;">
+            <h2>Why Clients Use Our Transportation Network</h2>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card gsap-feature">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24"><path class="draw-path-feature" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <h3>Reliable Provider Network</h3>
+                <p>We work with licensed third-party transportation providers serving Boston and surrounding areas.</p>
+            </div>
+            <div class="feature-card gsap-feature">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24"><path class="draw-path-feature" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                </div>
+                <h3>Streamlined Booking</h3>
+                <p>One request helps simplify the process of arranging airport transfers, private rides, and corporate transportation.</p>
+            </div>
+            <div class="feature-card gsap-feature">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24"><path class="draw-path-feature" d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle class="draw-path-feature" cx="12" cy="10" r="3"/></svg>
+                </div>
+                <h3>Local Coverage</h3>
+                <p>Our transportation network supports travel throughout Boston, Cambridge, Brookline, Newton, and nearby areas.</p>
+            </div>
+            <div class="feature-card gsap-feature">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24"><path class="draw-path-feature" d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle class="draw-path-feature" cx="8.5" cy="7" r="4"/><line class="draw-path-feature" x1="20" y1="8" x2="20" y2="14"/><line class="draw-path-feature" x1="23" y1="11" x2="17" y2="11"/></svg>
+                </div>
+                <h3>Professional Coordination</h3>
+                <p>We help organize transportation requests clearly so clients can move forward with confidence.</p>
+            </div>
+            <div class="feature-card gsap-feature">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24"><rect class="draw-path-feature" x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline class="draw-path-feature" points="17 2 12 7 7 2"/></svg>
+                </div>
+                <h3>Flexible Ride Types</h3>
+                <p>Transportation requests may include airport travel, city rides, executive transportation, and group travel.</p>
+            </div>
+            <div class="feature-card gsap-feature">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24"><polygon class="draw-path-feature" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <h3>Designed for Convenience</h3>
+                <p>Our goal is to make private transportation planning easier for travelers, businesses, and visitors.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <div class="services-wrapper" id="services">
+        <!-- Hareket eden arka plan katmanı -->
+        <div class="services-bg"></div>
+        
+        <!-- Sabit duran içerik katmanı -->
+        <section class="services-content">
+            <h2 class="gsap-service-title" style="max-width: 600px;">Experience premium brokerage services</h2>
+            <p class="service-intro gsap-service-title">Our transportation brokerage service helps coordinate airport transportation, private rides, and corporate transportation through a network of licensed third-party transportation providers in Boston.</p>
+            
+            <div class="service-grid">
+                <div class="service-card gsap-service-card">
+                    <div class="service-icon">
+                        <svg class="anim-svg" viewBox="0 0 24 24">
+                            <path class="draw-path-dark" d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.2-1.1.6L3 8l6 4-4 4-2.5-.5L2 16l4.5 1 1 4.5 1.5-.5-.5-2.5 4-4 4 6l1.2-.7c.4-.2.7-.6.6-1.1z"/>
+                        </svg>
+                    </div>
+                    <h3>Airport Transfers</h3>
+                    <p>Reliable transportation coordination to and from Boston Logan International Airport. We help travelers request airport transfers with licensed third-party providers for arrivals, departures, hotel transfers, and scheduled airport transportation.</p>
+                </div>
+
+                <div class="service-card gsap-service-card">
+                    <div class="service-icon">
+                        <svg class="anim-svg" viewBox="0 0 24 24">
+                            <path class="draw-path-dark" d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/>
+                            <circle class="draw-path-dark" cx="7" cy="17" r="2"/>
+                            <path class="draw-path-dark" d="M9 17h6"/>
+                            <circle class="draw-path-dark" cx="17" cy="17" r="2"/>
+                        </svg>
+                    </div>
+                    <h3>Private Rides</h3>
+                    <p>Private transportation coordination for local travel, hotel pickups, special events, city transfers, and personal transportation needs throughout Boston and nearby communities.</p>
+                </div>
+
+                <div class="service-card gsap-service-card">
+                    <div class="service-icon">
+                        <svg class="anim-svg" viewBox="0 0 24 24">
+                            <rect class="draw-path-dark" x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                            <path class="draw-path-dark" d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                        </svg>
+                    </div>
+                    <h3>Corporate Routing</h3>
+                    <p>Professional transportation coordination for executives, business travelers, meetings, conferences, and client transportation requests across the Greater Boston area.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Boston Transportation Services SEO Section -->
+    <section class="container split-layout">
+        <div class="left-col gsap-fade-up">
+            <h2>Boston Transportation Services for Travelers and Businesses</h2>
+            <p>Boston is a busy city where reliable transportation planning matters. From airport pickups and hotel transfers to business travel and private transportation, coordinated service can make travel more efficient and less stressful.</p>
+            
+            <div class="img-mask image-tall gsap-img-reveal">
+                <img src="https://images.unsplash.com/photo-1506501139174-099022df5260?q=80&w=2071&auto=format&fit=crop" alt="Boston Cityscape Architecture" class="gsap-img-scale">
+            </div>
+        </div>
+        
+        <div class="right-col">
+            <div class="text-block gsap-fade-up-stagger">
+                <h3>Our brokerage service helps coordinate:</h3>
+                <ul class="minimal-list" style="margin-top: 15px;">
+                    <li>Boston airport transportation</li>
+                    <li>Boston private rides</li>
+                    <li>Boston corporate transportation</li>
+                    <li>Logan Airport transfers</li>
+                    <li>Executive transportation coordination</li>
+                    <li>Transportation for visitors, families, and business travelers</li>
+                </ul>
+            </div>
+            
+            <div class="text-block gsap-fade-up-stagger">
+                <h3>Connecting you with providers serving:</h3>
+                <p>Boston, Cambridge, Brookline, Somerville, Newton, Quincy, and surrounding areas.</p>
+            </div>
+            
+            <div class="text-block gsap-fade-up-stagger">
+                <p>If you are searching for Boston private transportation, Boston airport transfer service, Boston car service, or corporate transportation in Boston, this platform helps connect you with professional transportation providers through a streamlined request process.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="container">
+        <div class="faq-header gsap-fade-up">
+            <h2>Frequently Asked Questions</h2>
+        </div>
+        
+        <div class="faq-grid">
+            <div class="faq-item gsap-faq">
+                <h4>Do you provide transportation directly?</h4>
+                <p>No. We operate strictly as a transportation broker and connect customers with independent third-party transportation providers.</p>
+            </div>
+            <div class="faq-item gsap-faq">
+                <h4>Do you own or operate vehicles?</h4>
+                <p>No. We do not own, manage, or operate vehicles.</p>
+            </div>
+            <div class="faq-item gsap-faq">
+                <h4>How far in advance should I request transportation?</h4>
+                <p>All transportation requests must be submitted at least 48 hours in advance.</p>
+            </div>
+            <div class="faq-item gsap-faq">
+                <h4>Do you provide airport transportation?</h4>
+                <p>Yes. Our network includes third-party transportation providers that can fulfill airport transportation requests in the Boston area.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service Area & Route SVG -->
+    <section class="container">
+        <div class="gsap-fade-up text-center" style="max-width: 800px; margin: 0 auto; text-align: center;">
+            
+            <div class="route-graphic">
+                <svg viewBox="0 0 400 100">
+                    <circle cx="20" cy="50" r="8" fill="var(--text-dark)"/>
+                    <path class="route-path draw-route" d="M 20 50 C 100 0, 300 100, 380 50" />
+                    <circle class="route-pin" cx="380" cy="50" r="10" fill="var(--white)" stroke="var(--text-dark)" stroke-width="4"/>
+                    <circle class="route-pin" cx="380" cy="50" r="3" fill="var(--text-dark)"/>
+                </svg>
+            </div>
+
+            <h2>Service Area</h2>
+            <p>We help coordinate transportation requests throughout Boston, Cambridge, Brookline, Somerville, Newton, Quincy, and surrounding Massachusetts communities.</p>
+            
+            <div style="text-align: left; background: var(--light-bg); padding: 50px; border-radius: 32px; margin-top: 50px;">
+                <h3 style="margin-bottom: 20px;">Common transportation requests include:</h3>
+                <ul class="minimal-list">
+                    <li>Logan Airport transportation</li>
+                    <li>Hotel pickup and drop-off</li>
+                    <li>Business and executive rides</li>
+                    <li>Private local transportation</li>
+                </ul>
+                <p style="margin-bottom: 0; margin-top: 20px;">Our transportation brokerage model is designed to help travelers and businesses request dependable private transportation options across the Greater Boston area.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quote Request Form -->
+    <section id="quote" class="quote-section">
+        <div class="container">
+            <div class="quote-header gsap-fade-up">
+                <h2>Request your quote</h2>
+                <p>Request your transportation quote and our team will review your details to help connect you with a suitable third-party transportation provider in Boston or the surrounding area.</p>
+            </div>
+
+            <form action="mailto:quotes@bostonbroker.com" method="POST" enctype="text/plain" class="quote-form gsap-form">
+                <div class="form-grid">
+                    <div class="form-group"><label>Full Name</label><input type="text" name="Name" required placeholder="John Doe"></div>
+                    <div class="form-group"><label>Phone Number</label><input type="tel" name="Phone" required placeholder="(555) 123-4567"></div>
+                    <div class="form-group full-width"><label>Email Address</label><input type="email" name="Email" required placeholder="john@example.com"></div>
+                    <div class="form-group full-width"><label>Pickup Location</label><input type="text" name="Pickup" required placeholder="Street address or Airport"></div>
+                    <div class="form-group full-width"><label>Drop-off Location</label><input type="text" name="Dropoff" required placeholder="Street address or Hotel"></div>
+                    <div class="form-group"><label>Date</label><input type="date" name="Date" required></div>
+                    <div class="form-group"><label>Time</label><input type="time" name="Time" required></div>
+                    <div class="form-group"><label>Passengers</label><input type="number" name="Passengers" min="1" required placeholder="1"></div>
+                    <div class="form-group"><label>Luggage</label><input type="number" name="Bags" min="0" required placeholder="0"></div>
+                    <div class="form-group full-width"><label>Notes</label><textarea name="Notes" rows="3" placeholder="Flight numbers, child seats, etc."></textarea></div>
+                </div>
+                
+                <button type="submit" class="btn-pill btn-dark" style="width: 100%; justify-content: center; padding: 18px; margin-top: 10px;">
+                    Send Request <svg width="16" height="16" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </button>
+                <p class="form-reassurance">By submitting this form, you acknowledge that this website operates only as a transportation broker and that all transportation services are fulfilled by independent third-party providers.</p>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <div class="footer-wrapper">
+        <footer class="gsap-footer">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h2 style="font-size: 2rem; margin-bottom: 10px;">BostonBroker</h2>
+                    <p style="max-width: 350px;">BostonBroker is a transportation brokerage platform that helps connect travelers and businesses with licensed third-party transportation providers across Boston and surrounding areas.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4><a href="#about">About Us</a><a href="#services">Services</a><a href="#quote">Book a Ride</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4><p style="color: var(--white); margin-bottom: 5px;">Service Area:</p><p>Boston & surrounding areas</p>
+                    <p style="margin-top: 15px;">(617) 555-0198</p><p>quotes@bostonbroker.com</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p style="max-width: 800px; line-height: 1.6;"><strong>Disclaimer:</strong> BostonBroker operates strictly as a transportation broker. We do not own or operate vehicles. All transportation services are provided by independent third-party transportation providers.</p>
+                <div class="footer-bottom-flex">
+                    <p style="margin: 0;">&copy; 2024 BostonBroker. All Rights Reserved.</p>
+                    <div style="display: flex; gap: 20px;"><a href="#">Privacy Policy</a><a href="#">Terms & Conditions</a></div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- GSAP & LENIS ANIMATIONS & VIDEO LOGIC -->
+    <script>
+        const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), direction: 'vertical', gestureDirection: 'vertical', smooth: true });
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time)=>{ lenis.raf(time * 1000) });
+        gsap.ticker.lagSmoothing(0);
+        gsap.registerPlugin(ScrollTrigger);
+
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            // ==========================================
+            // VİDEO OPTİMİZASYONU VE OYNATMA MANTIĞI
+            // ==========================================
+            const heroVideo = document.getElementById('heroVideo');
+            const heroWrapper = document.querySelector('.hero-wrapper');
+
+            if (heroVideo && heroWrapper) {
+                // Sayfa tam yüklendiğinde oynamaya başlar
+                window.addEventListener('load', () => {
+                    videoObserver.observe(heroWrapper);
+                });
+
+                // Görünürlük kontrolü (Scroll)
+                const videoObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && !document.hidden) {
+                            heroVideo.play().catch(e => console.log("Otomatik oynatma engellendi:", e));
+                        } else {
+                            heroVideo.pause();
+                        }
+                    });
+                }, { threshold: 0 });
+
+                // Sekme değişikliği kontrolü (Tab Switch)
+                document.addEventListener('visibilitychange', () => {
+                    if (document.hidden) {
+                        heroVideo.pause();
+                    } else {
+                        const rect = heroWrapper.getBoundingClientRect();
+                        const isInView = (rect.top <= window.innerHeight && rect.bottom >= 0);
+                        if (isInView) {
+                            heroVideo.play().catch(e => console.log("Otomatik oynatma hatası:", e));
+                        }
+                    }
+                });
+            }
+
+            // ==========================================
+            // GSAP ANIMATIONS
+            // ==========================================
+            
+            // Hero
+            const tlHero = gsap.timeline();
+            tlHero.from(".gsap-nav", { y: -50, opacity: 0, duration: 1, ease: "power3.out" })
+                  .from(".gsap-hero-title", { y: 50, opacity: 0, duration: 1.2, ease: "power4.out" }, "-=0.5")
+                  .from(".gsap-hero-text", { y: 30, opacity: 0, duration: 1, ease: "power3.out" }, "-=0.8")
+                  .from(".gsap-hero-btn", { y: 20, opacity: 0, duration: 1, ease: "power3.out" }, "-=0.6");
+
+            gsap.to(".hero-bg", { yPercent: 30, ease: "none", scrollTrigger: { trigger: ".hero-wrapper", start: "top top", end: "bottom top", scrub: true }});
+            gsap.to(".gsap-notice", { opacity: 1, y: -20, duration: 1, ease: "power3.out", scrollTrigger: { trigger: ".gsap-notice", start: "top 90%" }});
+
+            // Generic Fade Ups
+            gsap.utils.toArray('.gsap-fade-up').forEach(element => {
+                gsap.from(element, { y: 40, opacity: 0, duration: 1.2, ease: "power3.out", scrollTrigger: { trigger: element, start: "top 85%" }});
+            });
+
+            // Image Reveal & Parallax
+            gsap.utils.toArray('.gsap-img-reveal').forEach(wrapper => {
+                const img = wrapper.querySelector('.gsap-img-scale');
+                gsap.from(wrapper, { clipPath: "inset(20% 20% 20% 20% round 32px)", opacity: 0, duration: 1.5, ease: "power4.out", scrollTrigger: { trigger: wrapper, start: "top 85%" }});
+                gsap.from(img, { scale: 1.3, duration: 2, ease: "power3.out", scrollTrigger: { trigger: wrapper, start: "top 85%" }});
+            });
+
+            // Split Section Stagger
+            gsap.from(".gsap-fade-up-stagger", { y: 30, opacity: 0, duration: 1, stagger: 0.15, ease: "power3.out", scrollTrigger: { trigger: ".right-col", start: "top 80%" }});
+
+            // Features Grid & SVGs
+            gsap.from(".gsap-feature", { y: 40, opacity: 0, duration: 1, stagger: 0.1, ease: "power3.out", scrollTrigger: { trigger: ".features-grid", start: "top 85%" }});
+            
+            const featurePaths = document.querySelectorAll('.draw-path-feature');
+            featurePaths.forEach(path => {
+                const length = path.getTotalLength();
+                gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
+            });
+            gsap.to(".draw-path-feature", {
+                strokeDashoffset: 0, duration: 2, stagger: 0.1, ease: "power2.out",
+                scrollTrigger: { trigger: ".features-grid", start: "top 80%" }
+            });
+
+            // FAQ Stagger
+            gsap.from(".gsap-faq", { y: 30, opacity: 0, duration: 0.8, stagger: 0.1, ease: "power2.out", scrollTrigger: { trigger: ".faq-grid", start: "top 85%" }});
+
+            // Step Line
+            gsap.to(".svg-line-progress", { scaleY: 1, ease: "none", scrollTrigger: { trigger: ".steps-container", start: "top center", end: "bottom center", scrub: true }});
+            gsap.utils.toArray('.step').forEach(step => { gsap.to(step, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", scrollTrigger: { trigger: step, start: "top 75%" }});});
+
+            // Services Background Animasyonu (Genişlik)
+            gsap.from(".services-bg", { 
+                width: "70%", borderRadius: "60px", duration: 1.5, ease: "power4.inOut", 
+                scrollTrigger: { trigger: ".services-wrapper", start: "top 80%", end: "top 20%", scrub: 1 }
+            });
+
+            gsap.from(".gsap-service-title", { y: 40, opacity: 0, duration: 1, stagger: 0.1, ease: "power3.out", scrollTrigger: { trigger: ".services-wrapper", start: "top 60%" }});
+
+            const servicePaths = document.querySelectorAll('.draw-path-dark');
+            servicePaths.forEach(path => {
+                const length = path.getTotalLength();
+                gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
+            });
+            gsap.from(".gsap-service-card", {
+                y: 60, opacity: 0, duration: 1.2, stagger: 0.2, ease: "power3.out",
+                scrollTrigger: { trigger: ".service-grid", start: "top 75%" },
+                onStart: () => { gsap.to(".gsap-service-card .draw-path-dark", { strokeDashoffset: 0, duration: 2, stagger: 0.1, ease: "power2.inOut" }); }
+            });
+
+            // Route SVG Animation
+            const routePath = document.querySelector('.draw-route');
+            if(routePath) {
+                const routeLength = routePath.getTotalLength();
+                gsap.set(routePath, { strokeDasharray: routeLength, strokeDashoffset: routeLength });
+                gsap.to(routePath, { strokeDashoffset: 0, duration: 2, ease: "power2.out", scrollTrigger: { trigger: ".route-graphic", start: "top 85%" }});
+                gsap.from(".route-pin", { scale: 0, opacity: 0, duration: 0.5, stagger: 0.2, delay: 1, ease: "back.out(1.7)", scrollTrigger: { trigger: ".route-graphic", start: "top 85%" }});
+            }
+
+            // Form
+            gsap.from(".gsap-form", { scale: 0.98, opacity: 0, duration: 1.2, ease: "power4.out", scrollTrigger: { trigger: ".quote-section", start: "top 75%" }});
+            gsap.from(".form-group", { y: 20, opacity: 0, duration: 0.8, stagger: 0.05, ease: "power2.out", scrollTrigger: { trigger: ".gsap-form", start: "top 75%" }});
+
+            // Footer
+            gsap.from(".gsap-footer", { y: 50, opacity: 0, duration: 1.5, ease: "power3.out", scrollTrigger: { trigger: ".footer-wrapper", start: "top 90%" }});
+        });
+    </script>
+</body>
+</html>
