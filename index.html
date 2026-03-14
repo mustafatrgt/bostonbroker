@@ -59,7 +59,8 @@
             background-color: var(--light-bg);
             display: block;
         }
-        .img-mask img {
+        .img-mask img,
+        .img-mask video {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -78,6 +79,7 @@
         }
         .btn-pill:hover { transform: scale(1.02); }
         .btn-pill svg { background: var(--dark-bg); color: var(--white); width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-left: 15px; }
+        .btn-pill svg * { stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
         .btn-dark { background: var(--dark-bg); color: var(--white); }
         .btn-dark svg { background: var(--white); color: var(--dark-bg); }
 
@@ -87,16 +89,16 @@
         .minimal-list li::before { content: '—'; position: absolute; left: 0; color: var(--text-dark); font-weight: 600; }
 
         /* Navbar */
-        nav { position: absolute; top: 0; width: 100%; padding: 30px 5%; display: flex; justify-content: space-between; align-items: center; z-index: 100; mix-blend-mode: difference; color: white; }
-        .logo { font-size: 1.5rem; font-weight: 600; letter-spacing: -1px; }
+        nav { position: absolute; top: 0; width: 100%; padding: 30px 5%; display: flex; justify-content: space-between; align-items: center; z-index: 100; mix-blend-mode: normal; color: var(--white); }
+        .logo { font-size: 1.5rem; font-weight: 600; letter-spacing: -1px; color: var(--white); text-shadow: 0 6px 24px rgba(0,0,0,0.35); }
         .nav-links { display: flex; gap: 40px; }
-        .nav-links a { color: #fff; font-size: 0.95rem; text-decoration: none; opacity: 0.8; transition: opacity 0.3s; }
+        .nav-links a { color: var(--white); font-size: 0.95rem; text-decoration: none; opacity: 0.88; text-shadow: 0 4px 18px rgba(0,0,0,0.3); transition: opacity 0.3s; }
         .nav-links a:hover { opacity: 1; }
 
         /* ==========================================
            HERO SECTION (VİDEO OPTİMİZASYONU)
            ========================================== */
-        .hero-wrapper { position: relative; height: 95vh; margin: 10px; border-radius: 40px; overflow: hidden; background-color: var(--dark-bg); }
+        .hero-wrapper { position: relative; height: calc(100dvh - 20px); margin: 10px; border-radius: 40px; overflow: hidden; background-color: var(--dark-bg); }
         
         .hero-bg { 
             position: absolute; top: -10%; left: 0; width: 100%; height: 120%; /* GSAP Parallax için %120 boy */
@@ -129,10 +131,12 @@
         .notice-banner { background-color: var(--light-bg); padding: 24px 30px; margin: 60px auto 20px; max-width: 1300px; width: 90%; border-radius: 24px; color: var(--text-dark); display: flex; align-items: flex-start; gap: 15px; opacity: 0; }
         .notice-banner p { margin: 0; color: var(--text-dark); font-size: 0.95rem; line-height: 1.5; }
         .notice-banner svg { flex-shrink: 0; margin-top: 2px; }
+        .steps-container .notice-banner { width: 100%; max-width: none; margin: 41px 0 0; }
 
         /* About / How It Works */
-        .how-it-works { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: start; }
-        .steps-container { position: relative; padding-left: 40px; margin-top: 20px; }
+        #about { padding-top: 155px; padding-bottom: 105px; }
+        .how-it-works { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: start; margin-bottom: 34px; }
+        .steps-container { position: relative; padding-left: 40px; margin-top: 48px; }
         .svg-line-container { position: absolute; left: 0; top: 10px; bottom: 30px; width: 2px; background: var(--border-color); }
         .svg-line-progress { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--text-dark); transform-origin: top; transform: scaleY(0); }
         .step { position: relative; margin-bottom: 60px; opacity: 0; transform: translateY(30px); }
@@ -140,6 +144,112 @@
         .step-num { font-size: 0.85rem; color: var(--text-gray); font-weight: 600; margin-bottom: 5px; letter-spacing: 1px;}
         .step h4 { font-size: 1.4rem; margin-bottom: 10px; }
         .step p { margin: 0; font-size: 1.05rem; }
+        .gsap-about-title { line-height: 1.12; }
+        .about-title-line {
+            --about-line-fill: 0%;
+            display: block;
+            padding-bottom: 0.04em;
+            background: linear-gradient(
+                90deg,
+                var(--text-dark) 0 var(--about-line-fill),
+                #a7afba var(--about-line-fill) 100%
+            );
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+        }
+        .about-title-line + .about-title-line { margin-top: 0.06em; }
+
+        /* Standalone Video Block */
+        .promo-video-wrapper {
+            position: relative;
+            height: 100dvh;
+            min-height: 100dvh;
+            margin: 41px 0 0;
+            padding: 14px;
+            background-color: #FDFDFD;
+            border-radius: 40px;
+            overflow: hidden;
+        }
+        .promo-video-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 36px;
+        }
+        .promo-scroll-title {
+            margin: 0;
+            max-width: 900px;
+            text-align: center;
+            opacity: 1;
+            transform: translateY(-70px);
+            line-height: 1.05;
+        }
+        .promo-scroll-title-line {
+            display: block;
+            color: var(--text-dark);
+            white-space: nowrap;
+        }
+        .promo-char {
+            display: inline-block;
+            color: var(--text-dark);
+            transition: none;
+        }
+        .promo-scroll-title-line + .promo-scroll-title-line { margin-top: 0.06em; }
+        .promo-video-frame {
+            margin: 0;
+            border-radius: 32px;
+            width: min(50vw, 760px);
+            height: min(50vh, 420px);
+            overflow: hidden;
+            border: none;
+            box-shadow: none;
+            background-color: transparent;
+            position: relative;
+            z-index: 1;
+            will-change: opacity, transform;
+            transform-origin: center center;
+        }
+        .promo-video-frame video {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: contain;
+            object-position: center;
+            border-radius: inherit;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            box-shadow: none;
+        }
+        .promo-feature-stage {
+            position: absolute;
+            left: 50%;
+            bottom: clamp(14px, 3vh, 36px);
+            width: min(1300px, 100%);
+            opacity: 0;
+            transform: translate(-50%, 80px);
+            pointer-events: none;
+            padding: 0 8px;
+            z-index: 2;
+        }
+        .promo-feature-stage .features-grid {
+            margin-top: 0;
+            gap: 24px;
+        }
+        .promo-feature-stage .feature-card {
+            padding: 30px;
+            border-radius: 26px;
+        }
+        .promo-feature-stage .feature-icon { margin-bottom: 18px; }
+        .promo-feature-stage .feature-icon svg { width: 34px; height: 34px; }
+        .promo-feature-stage .feature-card h3 { font-size: 1.06rem; margin-bottom: 10px; }
+        .promo-feature-stage .feature-card p { font-size: 0.96rem; line-height: 1.5; }
 
         /* Features Section */
         .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 60px; }
@@ -165,13 +275,13 @@
             position: absolute;
             top: 0;
             left: 50%;
-            transform: translateX(-50%); /* Daima tam ortada durur */
-            width: 100%; /* GSAP ile bu değer 70%'den 100%'e anime edilecek */
+            transform: translateX(-50%) scaleX(0.7); /* Scroll ile 0.7 -> 1.0 */
+            width: 100%;
             height: 100%;
             background-color: var(--dark-bg);
-            border-radius: 40px;
+            border-radius: 60px;
             z-index: -1;
-            will-change: width, border-radius; /* Performans optimizasyonu */
+            will-change: transform, border-radius; /* Performans optimizasyonu */
         }
 
         .services-content {
@@ -184,22 +294,192 @@
         .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 60px; }
         .service-icon svg { width: 60px; height: 60px; margin-bottom: 30px; stroke-width: 1.5; stroke: var(--white); fill: none; stroke-linecap: round; stroke-linejoin: round; }
 
-        /* Split SEO Section */
-        .split-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 120px; align-items: start; } 
-        .split-layout .left-col { position: sticky; top: 120px; }
-        .text-block { margin-bottom: 50px; }
+        /* Brokerage Coverage Section */
+        .brokerage-layout {
+            display: grid;
+            grid-template-columns: 1.25fr 1fr;
+            gap: 56px;
+            align-items: stretch;
+        }
+        .brokerage-intro {
+            max-width: 1120px;
+            margin: 0 auto 72px;
+            text-align: center;
+        }
+        .brokerage-intro h2 {
+            max-width: 980px;
+            margin: 0 auto 24px;
+            line-height: 1.15;
+        }
+        .brokerage-intro p {
+            max-width: 980px;
+            margin: 0 auto;
+            font-size: 1.08rem;
+        }
+        .brokerage-image {
+            margin: 58px auto 0;
+            width: min(1120px, 100%);
+            height: 500px;
+            border-radius: 36px;
+            overflow: hidden;
+        }
+        .brokerage-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 70%;
+            filter: contrast(1.08) saturate(1.06);
+        }
+        .brokerage-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-top: 0;
+        }
+        .brokerage-left-title {
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            color: #697282;
+            margin-bottom: 22px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .brokerage-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            border-top: 1px solid var(--border-color);
+        }
+        .brokerage-list li {
+            border-bottom: 1px solid var(--border-color);
+            padding: 24px 0;
+            color: var(--text-dark);
+            font-size: 2rem;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+        .brokerage-panel {
+            background: var(--dark-bg);
+            border-radius: 42px;
+            padding: 42px 46px 44px;
+        }
+        .brokerage-badge {
+            display: block;
+            color: #b9c0cd;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 1.3px;
+            text-transform: none;
+            margin-bottom: 20px;
+        }
+        .brokerage-panel h2 {
+            font-size: clamp(2rem, 4.3vw, 4.2rem);
+            line-height: 1.08;
+            margin-bottom: 24px;
+            color: var(--white);
+        }
+        .brokerage-panel hr {
+            border: 0;
+            border-top: 1px solid rgba(255,255,255,0.12);
+            margin: 0 0 28px;
+        }
+        .brokerage-panel p {
+            margin: 0;
+            font-size: 1.08rem;
+            line-height: 1.55;
+            color: #aeb6c4;
+        }
 
-        /* Service Area SVG Graphic */
-        .route-graphic { display: flex; justify-content: center; margin-bottom: 60px; }
-        .route-graphic svg { width: 100%; max-width: 400px; height: auto; stroke: var(--text-dark); fill: none; stroke-linecap: round; stroke-linejoin: round; }
-        .route-path { stroke-dasharray: 8 8; stroke-width: 2; }
+        /* Premium Service Area */
+        .premium-sa-section { padding-top: 72px; padding-bottom: 140px; }
+        .premium-sa-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; align-items: start; }
+        .sa-left { position: sticky; top: 120px; }
+        .sa-map-card {
+            background-color: var(--dark-bg);
+            color: var(--white);
+            border-radius: 40px;
+            padding: 50px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            overflow: hidden;
+            position: relative;
+        }
+        .sa-map-inner { margin-bottom: 50px; position: relative; }
+        .sa-route-svg { width: 100%; height: auto; display: block; }
+        .map-line-light { fill: none; stroke: rgba(255,255,255,0.02); stroke-width: 1.5; }
+        .map-line-medium { fill: none; stroke: rgba(255,255,255,0.04); stroke-width: 2; stroke-linecap: round; }
+        .map-line-thick { fill: none; stroke: rgba(255,255,255,0.05); stroke-width: 6; stroke-linecap: round; }
+        .route-track { fill: none; stroke: rgba(255,255,255,0.25); stroke-width: 3; stroke-dasharray: 6 6; stroke-linecap: round; }
+        .city-text { font-family: 'Inter', sans-serif; font-size: 13px; fill: rgba(255,255,255,0.7); font-weight: 500; letter-spacing: 0.5px; }
+        .pulse-ring { fill: none; stroke: #ffffff; stroke-width: 2; animation: radarPulse 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite; }
+        .car-mover {
+            offset-path: path("M 60 150 Q 200 150 340 60");
+            offset-rotate: auto;
+            animation: moveCarLoop 10s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+        }
+        .car-flipper { transform-box: fill-box; transform-origin: center; animation: flipCarDirection 10s infinite; }
+        @keyframes moveCarLoop {
+            0%, 10% { offset-distance: 0%; }
+            45%, 55% { offset-distance: 100%; }
+            90%, 100% { offset-distance: 0%; }
+        }
+        @keyframes flipCarDirection {
+            0%, 49.9% { transform: scaleX(1); }
+            50%, 99.9% { transform: scaleX(-1); }
+            100% { transform: scaleX(1); }
+        }
+        @keyframes radarPulse {
+            0% { transform: scale(0.8); opacity: 1; }
+            100% { transform: scale(3.5); opacity: 0; }
+        }
+        .sa-map-card h3 { font-size: 2.2rem; margin-bottom: 15px; color: var(--white); letter-spacing: -0.02em; position: relative; z-index: 2; }
+        .sa-map-card p { color: #a1a1aa; font-size: 1.05rem; margin: 0; line-height: 1.6; position: relative; z-index: 2; }
+        .sa-right-header h2 { font-size: 2.2rem; margin-bottom: 40px; max-width: 500px; }
+        .sa-cards-wrapper { display: flex; flex-direction: column; gap: 20px; }
+        .sa-req-card { background-color: var(--light-bg); border-radius: 24px; padding: 30px; display: flex; align-items: flex-start; gap: 24px; transition: transform 0.4s ease, box-shadow 0.4s ease, background-color 0.4s ease; }
+        .sa-req-card:hover { transform: translateX(10px); background-color: var(--white); box-shadow: 0 15px 35px rgba(0,0,0,0.04); }
+        .sa-icon-box { background-color: var(--white); width: 60px; height: 60px; border-radius: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.02); transition: background-color 0.4s ease; }
+        .sa-req-card:hover .sa-icon-box { background-color: var(--dark-bg); }
+        .sa-icon-box svg { width: 28px; height: 28px; stroke: var(--text-dark); stroke-width: 1.5; fill: none; stroke-linecap: round; stroke-linejoin: round; transition: stroke 0.4s ease; }
+        .sa-req-card:hover .sa-icon-box svg { stroke: var(--white); }
+        .sa-card-text h4 { font-size: 1.25rem; margin-bottom: 8px; color: var(--text-dark); }
+        .sa-card-text p { margin: 0; font-size: 0.95rem; color: var(--text-gray); }
+        .sa-footer-note { margin-top: 20px; padding: 30px; background-color: var(--white); border-radius: 24px; border: 1px solid var(--border-color); }
+        .sa-footer-note p { margin: 0; font-size: 0.95rem; color: var(--text-gray); }
 
         /* FAQ Section */
-        .faq-header { text-align: center; margin-bottom: 80px; }
+        .faq-header { text-align: center; margin-bottom: 44px; }
+        .faq-section { margin-top: 0; padding-top: 120px; padding-bottom: 72px; }
         .faq-grid { display: flex; flex-direction: column; gap: 24px; max-width: 900px; margin: 0 auto; }
-        .faq-item { background: var(--light-bg); padding: 40px; border-radius: 32px; }
-        .faq-item h4 { font-size: 1.25rem; margin-bottom: 12px; }
-        .faq-item p { margin: 0; font-size: 1.05rem; color: var(--text-gray); }
+        .faq-item { background: var(--light-bg); border-radius: 32px; overflow: hidden; }
+        .faq-question {
+            width: 100%;
+            background: transparent;
+            border: 0;
+            padding: 30px 34px;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            cursor: pointer;
+        }
+        .faq-question h4 { font-size: 1.25rem; margin: 0; }
+        .faq-icon {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+            color: var(--text-gray);
+            transition: transform 0.35s ease, color 0.35s ease;
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 34px;
+            transition: max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .faq-answer p { margin: 0; font-size: 1.05rem; color: var(--text-gray); }
+        .faq-item.is-open .faq-answer { padding-bottom: 30px; }
+        .faq-item.is-open .faq-icon { transform: rotate(45deg); color: var(--text-dark); }
 
         /* Quote Form */
         .quote-section { background-color: var(--white); }
@@ -221,24 +501,62 @@
         .footer-col a:hover { color: var(--white); }
         .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; display: flex; flex-direction: column; gap: 15px; color: #a1a1aa; font-size: 0.85rem; }
         .footer-bottom-flex { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 10px; }
+        .footer-bottom-flex a {
+            color: #a1a1aa;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer-bottom-flex a:hover { color: var(--white); }
 
         /* Responsive */
         @media (max-width: 992px) {
-            .how-it-works, .split-layout { grid-template-columns: 1fr; gap: 60px; }
+            .how-it-works { grid-template-columns: 1fr; gap: 60px; }
             .features-grid, .service-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
             .footer-grid { grid-template-columns: 1fr; gap: 40px; }
-            .split-layout .left-col { position: relative; top: 0; }
+            .premium-sa-grid { grid-template-columns: 1fr; gap: 60px; }
+            .sa-left { position: relative; top: 0; }
+            .sa-map-card { border-radius: 34px; padding: 40px; }
+            .brokerage-layout { grid-template-columns: 1fr; gap: 34px; }
+            .brokerage-left { justify-content: flex-start; }
+            .brokerage-image { height: 420px; border-radius: 30px; }
+            .brokerage-list li { font-size: 1.8rem; }
+            .brokerage-panel { padding: 36px 30px; border-radius: 34px; }
             nav .nav-links { display: none; }
             .image-tall { height: 350px; }
             section { padding: 100px 0; }
             .services-wrapper { margin: 60px 10px; padding: 100px 5%; }
+            .promo-video-wrapper { margin-top: 25px; border-radius: 34px; }
+            .promo-video-frame { width: min(68vw, 620px); height: min(44vh, 360px); }
+            .promo-feature-stage .features-grid { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 768px) {
             .hero-wrapper { height: 85vh; border-radius: 30px; }
             .features-grid, .service-grid, .form-grid { grid-template-columns: 1fr; }
             .quote-form { padding: 30px; border-radius: 30px; }
             .services-wrapper { padding: 80px 5%; }
+            .brokerage-left-title { margin-bottom: 14px; }
+            .brokerage-intro { margin-bottom: 44px; }
+            .brokerage-intro h2 { margin-bottom: 16px; }
+            .brokerage-intro p { font-size: 1rem; }
+            .brokerage-image { height: 300px; border-radius: 24px; margin-top: 32px; }
+            .brokerage-list li { font-size: 1.5rem; padding: 18px 0; }
+            .brokerage-panel { border-radius: 28px; padding: 28px 22px; }
+            .brokerage-panel h2 { margin-bottom: 18px; }
+            .brokerage-panel hr { margin-bottom: 18px; }
+            .brokerage-panel p { font-size: 1rem; }
+            .faq-header { margin-bottom: 30px; }
+            .faq-section { padding-top: 92px; padding-bottom: 56px; }
+            .premium-sa-section { padding-top: 56px; padding-bottom: 100px; }
+            .sa-map-card { padding: 30px; border-radius: 30px; }
+            .sa-req-card { padding: 20px; flex-direction: column; gap: 15px; }
+            .sa-req-card:hover { transform: translateY(-5px); }
             .services-bg { border-radius: 30px; }
+            .promo-video-wrapper { margin-top: 13px; border-radius: 30px; padding: 10px; }
+            .promo-video-inner { gap: 24px; }
+            .promo-video-frame { width: 88vw; height: min(38vh, 300px); border-radius: 24px; }
+            .promo-feature-stage { bottom: 12px; }
+            .promo-feature-stage .features-grid { grid-template-columns: 1fr; }
+            .promo-feature-stage .feature-card { padding: 22px; border-radius: 22px; }
             .footer-bottom-flex { flex-direction: column; gap: 15px; text-align: left; align-items: flex-start; }
             .faq-item { padding: 30px; }
         }
@@ -269,10 +587,8 @@
             <div class="video-overlay"></div>
             
             <!-- Video: autoplay özelliği JS ile kontrol edilecek -->
-            <!-- poster: Sayfa yüklenene kadar veya video oynatılmadığında görünecek görsel -->
-            <!-- NOT: src ve poster yollarını kendi dosyalarınıza göre değiştirin -->
-            <video id="heroVideo" muted loop playsinline class="hero-video" poster="maserati-kapak.jpg">
-                <source src="maserati-video.mp4" type="video/mp4">
+            <video id="heroVideo" muted loop playsinline preload="metadata" class="hero-video" poster="assets/hero-background-poster.webp">
+                <source src="assets/hero-background-video-2.mp4" type="video/mp4">
                 Tarayıcınız video etiketini desteklemiyor.
             </video>
         </div>
@@ -290,23 +606,22 @@
         </div>
     </div>
 
-    <!-- Important Notice Banner -->
-    <div class="notice-banner gsap-notice">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
-        <p><strong>IMPORTANT NOTICE:</strong> We operate strictly as a transportation broker and do not own or operate vehicles. All bookings must be requested at least 48 hours in advance. Porter or baggage assistance is not provided. All transportation services are fulfilled by independent third-party providers.</p>
-    </div>
-
     <!-- About / How It Works -->
     <section id="about" class="container">
         <div class="how-it-works">
-            <div class="about-text gsap-fade-up">
-                <h2>Arranged perfectly in 3 simple steps</h2>
-                <p>We help simplify private transportation booking in Boston by connecting customers with licensed third-party transportation providers. Instead of searching through multiple transportation companies, clients can submit one request and our team helps coordinate a suitable match.</p>
-                <p>Whether you need airport transportation to Boston Logan International Airport, private city transportation, or corporate travel coordination, our brokerage model helps streamline the process.</p>
-                
+            <div class="about-text">
                 <div class="img-mask image-wide gsap-img-reveal">
-                    <img src="https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=2115&auto=format&fit=crop" alt="Premium luxury vehicle interior" class="gsap-img-scale">
+                    <video class="gsap-img-scale" autoplay muted loop playsinline preload="metadata" aria-label="Decorative animated driving scene">
+                        <source src="assets/fun-3d-cartoon-baby-rocker-driving-2026-01-28-04-35-00-utc.webm" type="video/webm">
+                        Tarayıcınız video etiketini desteklemiyor.
+                    </video>
                 </div>
+                <h2 class="gsap-about-title">
+                    <span class="about-title-line line-1">Arranged perfectly</span>
+                    <span class="about-title-line line-2">in 3 simple steps</span>
+                </h2>
+                <p class="gsap-about-text">We help simplify private transportation booking in Boston by connecting customers with licensed third-party transportation providers. Instead of searching through multiple transportation companies, clients can submit one request and our team helps coordinate a suitable match.</p>
+                <p class="gsap-about-text">Whether you need airport transportation to Boston Logan International Airport, private city transportation, or corporate travel coordination, our brokerage model helps streamline the process.</p>
             </div>
             
             <div class="steps-container">
@@ -327,61 +642,79 @@
                     <h4>Transportation Arranged</h4>
                     <p>Once your request is confirmed, the assigned third-party transportation provider fulfills the ride.</p>
                 </div>
+
+                <div class="notice-banner gsap-notice">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="7.4" x2="12" y2="13.4"></line>
+                        <circle cx="12" cy="16.9" r="1.1" fill="#6b7280" stroke="none"></circle>
+                    </svg>
+                    <p><strong>IMPORTANT NOTICE:</strong> We operate strictly as a transportation broker and do not own or operate vehicles. All bookings must be requested at least 48 hours in advance. Porter or baggage assistance is not provided. All transportation services are fulfilled by independent third-party providers.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Why Clients Use Our Network -->
-    <section class="container">
-        <div class="gsap-fade-up text-center" style="max-width: 800px; margin: 0 auto 20px;">
-            <h2>Why Clients Use Our Transportation Network</h2>
+    <div class="promo-video-wrapper">
+        <div class="promo-video-inner">
+            <h2 class="promo-scroll-title">
+                <span class="promo-scroll-title-line line-1">Why Clients Use Our</span>
+                <span class="promo-scroll-title-line line-2">Transportation Network</span>
+            </h2>
+            <div class="promo-video-frame">
+                <video id="promoScrollVideo" muted playsinline preload="auto" poster="assets/promo-scroll-video-poster.webp" aria-label="Decorative animated driving scene">
+                    <source src="assets/fun-3d-cartoon-baby-rocker-driving-2026-01-28-04-36-00-utc-scrub.webm" type="video/webm">
+                    Tarayıcınız video etiketini desteklemiyor.
+                </video>
+            </div>
+            <div class="promo-feature-stage">
+                <div class="features-grid">
+                    <div class="feature-card gsap-feature">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24"><path class="draw-path-feature" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                        <h3>Reliable Provider Network</h3>
+                        <p>We work with licensed third-party transportation providers serving Boston and surrounding areas.</p>
+                    </div>
+                    <div class="feature-card gsap-feature">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24"><path class="draw-path-feature" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                        </div>
+                        <h3>Streamlined Booking</h3>
+                        <p>One request helps simplify the process of arranging airport transfers, private rides, and corporate transportation.</p>
+                    </div>
+                    <div class="feature-card gsap-feature">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24"><path class="draw-path-feature" d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle class="draw-path-feature" cx="12" cy="10" r="3"/></svg>
+                        </div>
+                        <h3>Local Coverage</h3>
+                        <p>Our transportation network supports travel throughout Boston, Cambridge, Brookline, Newton, and nearby areas.</p>
+                    </div>
+                    <div class="feature-card gsap-feature">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24"><path class="draw-path-feature" d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle class="draw-path-feature" cx="8.5" cy="7" r="4"/><line class="draw-path-feature" x1="20" y1="8" x2="20" y2="14"/><line class="draw-path-feature" x1="23" y1="11" x2="17" y2="11"/></svg>
+                        </div>
+                        <h3>Professional Coordination</h3>
+                        <p>We help organize transportation requests clearly so clients can move forward with confidence.</p>
+                    </div>
+                    <div class="feature-card gsap-feature">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24"><rect class="draw-path-feature" x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline class="draw-path-feature" points="17 2 12 7 7 2"/></svg>
+                        </div>
+                        <h3>Flexible Ride Types</h3>
+                        <p>Transportation requests may include airport travel, city rides, executive transportation, and group travel.</p>
+                    </div>
+                    <div class="feature-card gsap-feature">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24"><polygon class="draw-path-feature" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        </div>
+                        <h3>Designed for Convenience</h3>
+                        <p>Our goal is to make private transportation planning easier for travelers, businesses, and visitors.</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <div class="features-grid">
-            <div class="feature-card gsap-feature">
-                <div class="feature-icon">
-                    <svg viewBox="0 0 24 24"><path class="draw-path-feature" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                </div>
-                <h3>Reliable Provider Network</h3>
-                <p>We work with licensed third-party transportation providers serving Boston and surrounding areas.</p>
-            </div>
-            <div class="feature-card gsap-feature">
-                <div class="feature-icon">
-                    <svg viewBox="0 0 24 24"><path class="draw-path-feature" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                </div>
-                <h3>Streamlined Booking</h3>
-                <p>One request helps simplify the process of arranging airport transfers, private rides, and corporate transportation.</p>
-            </div>
-            <div class="feature-card gsap-feature">
-                <div class="feature-icon">
-                    <svg viewBox="0 0 24 24"><path class="draw-path-feature" d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle class="draw-path-feature" cx="12" cy="10" r="3"/></svg>
-                </div>
-                <h3>Local Coverage</h3>
-                <p>Our transportation network supports travel throughout Boston, Cambridge, Brookline, Newton, and nearby areas.</p>
-            </div>
-            <div class="feature-card gsap-feature">
-                <div class="feature-icon">
-                    <svg viewBox="0 0 24 24"><path class="draw-path-feature" d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle class="draw-path-feature" cx="8.5" cy="7" r="4"/><line class="draw-path-feature" x1="20" y1="8" x2="20" y2="14"/><line class="draw-path-feature" x1="23" y1="11" x2="17" y2="11"/></svg>
-                </div>
-                <h3>Professional Coordination</h3>
-                <p>We help organize transportation requests clearly so clients can move forward with confidence.</p>
-            </div>
-            <div class="feature-card gsap-feature">
-                <div class="feature-icon">
-                    <svg viewBox="0 0 24 24"><rect class="draw-path-feature" x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline class="draw-path-feature" points="17 2 12 7 7 2"/></svg>
-                </div>
-                <h3>Flexible Ride Types</h3>
-                <p>Transportation requests may include airport travel, city rides, executive transportation, and group travel.</p>
-            </div>
-            <div class="feature-card gsap-feature">
-                <div class="feature-icon">
-                    <svg viewBox="0 0 24 24"><polygon class="draw-path-feature" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                </div>
-                <h3>Designed for Convenience</h3>
-                <p>Our goal is to make private transportation planning easier for travelers, businesses, and visitors.</p>
-            </div>
-        </div>
-    </section>
+    </div>
 
     <!-- Services Section -->
     <div class="services-wrapper" id="services">
@@ -431,92 +764,188 @@
         </section>
     </div>
 
-    <!-- Boston Transportation Services SEO Section -->
-    <section class="container split-layout">
-        <div class="left-col gsap-fade-up">
-            <h2>Boston Transportation Services for Travelers and Businesses</h2>
+    <!-- Brokerage Coverage Section -->
+    <section class="container">
+        <div class="brokerage-intro gsap-fade-up">
+            <h2>Boston Transportation Services<br>for Travelers and Businesses</h2>
             <p>Boston is a busy city where reliable transportation planning matters. From airport pickups and hotel transfers to business travel and private transportation, coordinated service can make travel more efficient and less stressful.</p>
-            
-            <div class="img-mask image-tall gsap-img-reveal">
-                <img src="https://images.unsplash.com/photo-1506501139174-099022df5260?q=80&w=2071&auto=format&fit=crop" alt="Boston Cityscape Architecture" class="gsap-img-scale">
+            <div class="brokerage-image gsap-img-reveal">
+                <img src="https://images.unsplash.com/photo-1506501139174-099022df5260?q=80&w=2071&auto=format&fit=crop" alt="Boston city aerial skyline at dusk" class="gsap-img-scale">
             </div>
         </div>
-        
-        <div class="right-col">
-            <div class="text-block gsap-fade-up-stagger">
-                <h3>Our brokerage service helps coordinate:</h3>
-                <ul class="minimal-list" style="margin-top: 15px;">
-                    <li>Boston airport transportation</li>
-                    <li>Boston private rides</li>
-                    <li>Boston corporate transportation</li>
-                    <li>Logan Airport transfers</li>
-                    <li>Executive transportation coordination</li>
-                    <li>Transportation for visitors, families, and business travelers</li>
-                </ul>
-            </div>
-            
-            <div class="text-block gsap-fade-up-stagger">
-                <h3>Connecting you with providers serving:</h3>
-                <p>Boston, Cambridge, Brookline, Somerville, Newton, Quincy, and surrounding areas.</p>
-            </div>
-            
-            <div class="text-block gsap-fade-up-stagger">
+
+        <div class="brokerage-layout">
+            <div class="brokerage-panel gsap-brokerage-panel">
+                <span class="brokerage-badge">Connecting you with providers serving:</span>
+                <h2>Boston, Cambridge, Brookline, Somerville, Newton, Quincy, and surrounding areas.</h2>
+                <hr>
                 <p>If you are searching for Boston private transportation, Boston airport transfer service, Boston car service, or corporate transportation in Boston, this platform helps connect you with professional transportation providers through a streamlined request process.</p>
+            </div>
+
+            <div class="brokerage-left gsap-fade-up">
+                <p class="brokerage-left-title">Our brokerage service coordinates</p>
+                <ul class="brokerage-list gsap-brokerage-list">
+                    <li class="brokerage-list-item">Boston airport transportation</li>
+                    <li class="brokerage-list-item">Boston private rides</li>
+                    <li class="brokerage-list-item">Boston corporate transportation</li>
+                    <li class="brokerage-list-item">Logan Airport transfers</li>
+                    <li class="brokerage-list-item">Executive transportation</li>
+                    <li class="brokerage-list-item">Visitor & family travel</li>
+                </ul>
             </div>
         </div>
     </section>
 
     <!-- FAQ Section -->
-    <section class="container">
+    <section class="container faq-section">
         <div class="faq-header gsap-fade-up">
             <h2>Frequently Asked Questions</h2>
         </div>
         
         <div class="faq-grid">
-            <div class="faq-item gsap-faq">
-                <h4>Do you provide transportation directly?</h4>
-                <p>No. We operate strictly as a transportation broker and connect customers with independent third-party transportation providers.</p>
+            <div class="faq-item gsap-faq is-open">
+                <button class="faq-question" type="button" aria-expanded="true">
+                    <h4>Do you provide transportation directly?</h4>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+                <div class="faq-answer">
+                    <p>No. We operate strictly as a transportation broker and connect customers with independent third-party transportation providers.</p>
+                </div>
             </div>
             <div class="faq-item gsap-faq">
-                <h4>Do you own or operate vehicles?</h4>
-                <p>No. We do not own, manage, or operate vehicles.</p>
+                <button class="faq-question" type="button" aria-expanded="false">
+                    <h4>Do you own or operate vehicles?</h4>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+                <div class="faq-answer">
+                    <p>No. We do not own, manage, or operate vehicles.</p>
+                </div>
             </div>
             <div class="faq-item gsap-faq">
-                <h4>How far in advance should I request transportation?</h4>
-                <p>All transportation requests must be submitted at least 48 hours in advance.</p>
+                <button class="faq-question" type="button" aria-expanded="false">
+                    <h4>How far in advance should I request transportation?</h4>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+                <div class="faq-answer">
+                    <p>All transportation requests must be submitted at least 48 hours in advance.</p>
+                </div>
             </div>
             <div class="faq-item gsap-faq">
-                <h4>Do you provide airport transportation?</h4>
-                <p>Yes. Our network includes third-party transportation providers that can fulfill airport transportation requests in the Boston area.</p>
+                <button class="faq-question" type="button" aria-expanded="false">
+                    <h4>Do you provide airport transportation?</h4>
+                    <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes. Our network includes third-party transportation providers that can fulfill airport transportation requests in the Boston area.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Service Area & Route SVG -->
-    <section class="container">
-        <div class="gsap-fade-up text-center" style="max-width: 800px; margin: 0 auto; text-align: center;">
-            
-            <div class="route-graphic">
-                <svg viewBox="0 0 400 100">
-                    <circle cx="20" cy="50" r="8" fill="var(--text-dark)"/>
-                    <path class="route-path draw-route" d="M 20 50 C 100 0, 300 100, 380 50" />
-                    <circle class="route-pin" cx="380" cy="50" r="10" fill="var(--white)" stroke="var(--text-dark)" stroke-width="4"/>
-                    <circle class="route-pin" cx="380" cy="50" r="3" fill="var(--text-dark)"/>
-                </svg>
+    <!-- Premium Service Area -->
+    <section class="container premium-sa-section">
+        <div class="premium-sa-grid">
+            <div class="sa-left">
+                <div class="sa-map-card gsap-fade-up">
+                    <div class="sa-map-inner">
+                        <svg viewBox="0 0 400 200" class="sa-route-svg">
+                            <g class="map-bg-roads">
+                                <path class="map-line-thick" d="M 280 0 Q 230 80 290 140 T 260 200" />
+                                <path class="map-line-thick" d="M 300 0 Q 250 80 310 140 T 280 200" />
+                                <path class="map-line-light" d="M 0 120 L 100 130" />
+                                <path class="map-line-light" d="M 20 140 L 120 160" />
+                                <path class="map-line-light" d="M 30 170 L 130 180" />
+                                <path class="map-line-light" d="M 60 110 L 40 200" />
+                                <path class="map-line-light" d="M 90 115 L 70 200" />
+                                <path class="map-line-light" d="M 120 120 L 100 200" />
+                                <path class="map-line-medium" d="M 0 50 Q 150 100 250 50" />
+                                <path class="map-line-medium" d="M 100 200 L 240 100 L 400 20" />
+                                <path class="map-line-medium" d="M 50 0 L 150 150" />
+                                <path class="map-line-medium" d="M 310 30 L 370 70" />
+                                <path class="map-line-medium" d="M 340 20 L 330 80" />
+                                <path class="map-line-medium" d="M 360 40 L 350 90" />
+                            </g>
+                            <path class="route-track" d="M 60 150 Q 200 150 340 60" />
+                            <g class="city-nodes">
+                                <g transform="translate(60, 150)">
+                                    <circle class="pulse-ring" cx="0" cy="0" r="6" style="animation-delay: 1s;" />
+                                    <circle cx="0" cy="0" r="4" fill="#fff"/>
+                                    <text x="0" y="25" class="city-text" text-anchor="middle">Downtown Boston</text>
+                                </g>
+                                <g transform="translate(340, 60)">
+                                    <circle class="pulse-ring" cx="0" cy="0" r="8" />
+                                    <circle cx="0" cy="0" r="4" fill="#fff"/>
+                                    <svg x="-12" y="-35" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.2-1.1.6L3 8l6 4-4 4-2.5-.5L2 16l4.5 1 1 4.5 1.5-.5-.5-2.5 4-4 4 6l1.2-.7c.4-.2.7-.6.6-1.1z"/>
+                                    </svg>
+                                    <text x="0" y="30" class="city-text" fill="#fff" text-anchor="middle" font-weight="600">Logan Airport</text>
+                                </g>
+                            </g>
+                            <g class="car-mover">
+                                <g class="car-flipper">
+                                    <svg x="-15" y="-15" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/>
+                                        <circle cx="7" cy="17" r="2"/>
+                                        <circle cx="17" cy="17" r="2"/>
+                                    </svg>
+                                </g>
+                            </g>
+                        </svg>
+                    </div>
+                    <h3>Seamless Airport Transfers</h3>
+                    <p>We expertly coordinate punctual and comfortable rides between downtown Boston, surrounding suburbs, and Logan International Airport.</p>
+                </div>
             </div>
 
-            <h2>Service Area</h2>
-            <p>We help coordinate transportation requests throughout Boston, Cambridge, Brookline, Somerville, Newton, Quincy, and surrounding Massachusetts communities.</p>
-            
-            <div style="text-align: left; background: var(--light-bg); padding: 50px; border-radius: 32px; margin-top: 50px;">
-                <h3 style="margin-bottom: 20px;">Common transportation requests include:</h3>
-                <ul class="minimal-list">
-                    <li>Logan Airport transportation</li>
-                    <li>Hotel pickup and drop-off</li>
-                    <li>Business and executive rides</li>
-                    <li>Private local transportation</li>
-                </ul>
-                <p style="margin-bottom: 0; margin-top: 20px;">Our transportation brokerage model is designed to help travelers and businesses request dependable private transportation options across the Greater Boston area.</p>
+            <div class="sa-right">
+                <div class="sa-right-header gsap-fade-up">
+                    <h2>Common transportation requests include:</h2>
+                </div>
+                <div class="sa-cards-wrapper">
+                    <div class="sa-req-card gsap-sa-card">
+                        <div class="sa-icon-box"><svg viewBox="0 0 24 24"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.2-1.1.6L3 8l6 4-4 4-2.5-.5L2 16l4.5 1 1 4.5 1.5-.5-.5-2.5 4-4 4 6l1.2-.7c.4-.2.7-.6.6-1.1z"/></svg></div>
+                        <div class="sa-card-text">
+                            <h4>Logan Airport transportation</h4>
+                            <p>Reliable coordination for departures and arrivals.</p>
+                        </div>
+                    </div>
+                    <div class="sa-req-card gsap-sa-card">
+                        <div class="sa-icon-box"><svg viewBox="0 0 24 24"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/></svg></div>
+                        <div class="sa-card-text">
+                            <h4>Hotel pickup and drop-off</h4>
+                            <p>Seamless transfers directly from your hotel lobby.</p>
+                        </div>
+                    </div>
+                    <div class="sa-req-card gsap-sa-card">
+                        <div class="sa-icon-box"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+                        <div class="sa-card-text">
+                            <h4>Business and executive rides</h4>
+                            <p>Professional, discreet, and strictly on-time routing.</p>
+                        </div>
+                    </div>
+                    <div class="sa-req-card gsap-sa-card">
+                        <div class="sa-icon-box"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+                        <div class="sa-card-text">
+                            <h4>Private local transportation</h4>
+                            <p>Point-to-point travel across the city and suburbs.</p>
+                        </div>
+                    </div>
+                    <div class="sa-footer-note gsap-sa-card">
+                        <p>Our transportation brokerage model is designed to help travelers and businesses request dependable private transportation options across the Greater Boston area.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -626,6 +1055,196 @@
             }
 
             // ==========================================
+            // SCROLL-CONTROLLED PROMO VIDEO
+            // ==========================================
+            const promoScrollVideo = document.getElementById('promoScrollVideo');
+            const promoVideoWrapper = document.querySelector('.promo-video-wrapper');
+            const promoScrollTitle = document.querySelector('.promo-scroll-title');
+            const promoTitleLines = gsap.utils.toArray('.promo-scroll-title .promo-scroll-title-line');
+            const promoTitleChars = [];
+            const promoTitleWordGroups = [];
+            const promoVideoFrame = document.querySelector('.promo-video-frame');
+            const promoFeatureStage = document.querySelector('.promo-feature-stage');
+            const promoFeatureCards = gsap.utils.toArray('.promo-feature-stage .gsap-feature');
+            const promoFeaturePaths = document.querySelectorAll('.promo-feature-stage .draw-path-feature');
+
+            if (promoScrollVideo && promoVideoWrapper) {
+                let promoScrollTrigger = null;
+                let postPromoRefreshed = false;
+                const promoFeaturePathLengths = [];
+                const promoGradientStart = { r: 101, g: 208, b: 255 }; // #65D0FF
+                const promoGradientEnd = { r: 40, g: 116, b: 177 };    // #2874B1
+
+                const splitPromoTitleToChars = () => {
+                    promoTitleLines.forEach((line) => {
+                        const text = line.textContent || "";
+                        line.textContent = "";
+                        let currentWord = [];
+                        for (const ch of text) {
+                            const span = document.createElement("span");
+                            if (ch === " ") {
+                                span.className = "promo-space";
+                                span.textContent = "\u00A0";
+                            } else {
+                                span.className = "promo-char";
+                                span.textContent = ch;
+                            }
+                            line.appendChild(span);
+                            if (ch === " ") {
+                                if (currentWord.length) {
+                                    promoTitleWordGroups.push(currentWord);
+                                    currentWord = [];
+                                }
+                            } else {
+                                promoTitleChars.push(span);
+                                currentWord.push(span);
+                            }
+                        }
+                        if (currentWord.length) {
+                            promoTitleWordGroups.push(currentWord);
+                        }
+                    });
+                };
+                splitPromoTitleToChars();
+
+                promoFeaturePaths.forEach((path) => {
+                    const length = path.getTotalLength();
+                    promoFeaturePathLengths.push({ path, length });
+                });
+
+                const applyPromoFeatureState = (cardsProgress) => {
+                    if (!promoFeatureStage) return;
+
+                    const stageProgress = Math.max(0, Math.min(1, cardsProgress));
+                    const easedStage = stageProgress * stageProgress * (3 - 2 * stageProgress);
+                    promoFeatureStage.style.opacity = "1";
+                    promoFeatureStage.style.transform = `translate(-50%, ${(1 - easedStage) * 80}px)`;
+                    promoFeatureStage.style.visibility = stageProgress > 0.02 ? "visible" : "hidden";
+                    promoFeatureStage.style.pointerEvents = stageProgress > 0.75 ? 'auto' : 'none';
+
+                    promoFeatureCards.forEach((card, index) => {
+                        const localStart = index * 0.075;
+                        const localProgress = Math.max(0, Math.min(1, (stageProgress - localStart) / 0.58));
+                        const easedLocal = 1 - Math.pow(1 - localProgress, 3);
+                        card.style.opacity = "1";
+                        card.style.visibility = localProgress > 0.001 ? "visible" : "hidden";
+                        card.style.transform = `translateY(${(1 - easedLocal) * 56}px)`;
+                        card.style.clipPath = `inset(0 0 ${(1 - easedLocal) * 100}% 0 round 26px)`;
+                    });
+
+                    promoFeaturePathLengths.forEach(({ path, length }, index) => {
+                        const pathProgress = Math.max(0, Math.min(1, (stageProgress * 1.5) - (index * 0.08)));
+                        path.style.strokeDasharray = String(length);
+                        path.style.strokeDashoffset = String(length * (1 - pathProgress));
+                    });
+                };
+
+                const setupPromoScrollVideo = () => {
+                    if (!promoScrollVideo.duration || !isFinite(promoScrollVideo.duration)) return;
+
+                    const promoDuration = Math.max(promoScrollVideo.duration - 0.01, 0);
+                    promoScrollVideo.pause();
+                    promoScrollVideo.currentTime = 0;
+                    postPromoRefreshed = false;
+
+                    if (promoScrollTitle) {
+                        gsap.set(promoScrollTitle, { opacity: 1, y: -70 });
+                    }
+                    promoTitleChars.forEach((char) => {
+                        char.style.color = "var(--text-dark)";
+                    });
+                    if (promoVideoFrame) {
+                        gsap.set(promoVideoFrame, { opacity: 1, scale: 1, visibility: "visible" });
+                    }
+                    applyPromoFeatureState(0);
+
+                    if (promoScrollTrigger) {
+                        promoScrollTrigger.kill();
+                    }
+
+                    promoScrollTrigger = ScrollTrigger.create({
+                        trigger: promoVideoWrapper,
+                        start: "top top",
+                        end: () => `+=${Math.max(window.innerHeight * 2.15, promoDuration * 300)}`,
+                        scrub: true,
+                        pin: true,
+                        anticipatePin: 1,
+                        invalidateOnRefresh: true,
+                        refreshPriority: 10,
+                        onUpdate: (self) => {
+                            const progress = self.progress;
+                            const videoScrubEnd = 0.7;
+                            const videoGoneAt = 0.88;
+                            const cardsStart = videoScrubEnd + 0.05;
+                            const videoPhaseProgress = Math.min(progress / videoScrubEnd, 1);
+                            const cardsPhaseProgress = Math.max((progress - cardsStart) / (1 - cardsStart), 0);
+                            promoScrollVideo.currentTime = promoDuration * videoPhaseProgress;
+                            if (promoVideoFrame) {
+                                const videoExitProgress = Math.max(0, Math.min(1, (progress - videoScrubEnd) / (videoGoneAt - videoScrubEnd)));
+                                const videoScale = Math.max(0, 1 - (videoExitProgress * 1.0));
+                                promoVideoFrame.style.opacity = "1";
+                                promoVideoFrame.style.transform = `scale(${videoScale}) translateY(${videoExitProgress * 24}px)`;
+                                promoVideoFrame.style.visibility = progress >= videoGoneAt ? "hidden" : "visible";
+                            }
+
+                            if (promoScrollTitle) {
+                                const titleProgress = Math.min(videoPhaseProgress / 0.75, 1);
+                                promoScrollTitle.style.transform = `translateY(${-(1 - titleProgress) * 70}px)`;
+                                for (let i = 0; i < promoTitleChars.length; i++) {
+                                    promoTitleChars[i].style.color = "var(--text-dark)";
+                                }
+                                if (progress < videoScrubEnd) {
+                                    const charWindowStart = 0.02;
+                                    const charWindowEnd = 0.98;
+                                    const charsProgress = Math.max(0, Math.min(1, (videoPhaseProgress - charWindowStart) / (charWindowEnd - charWindowStart)));
+                                    const wordCount = promoTitleWordGroups.length;
+                                    const wordProgress = charsProgress * wordCount;
+                                    const activeWordIndex = Math.min(Math.floor(wordProgress), Math.max(wordCount - 1, 0));
+                                    const activeWordFill = Math.max(0, Math.min(1, wordProgress - activeWordIndex));
+                                    const activeWordChars = promoTitleWordGroups[activeWordIndex] || [];
+                                    const lettersToPaint = activeWordFill <= 0
+                                        ? 0
+                                        : Math.max(1, Math.min(
+                                            activeWordChars.length,
+                                            Math.ceil(activeWordFill * activeWordChars.length)
+                                        ));
+                                    for (let i = 0; i < lettersToPaint; i++) {
+                                        const t = activeWordChars.length <= 1 ? 1 : (i / (activeWordChars.length - 1));
+                                        const r = Math.round(promoGradientStart.r + ((promoGradientEnd.r - promoGradientStart.r) * t));
+                                        const g = Math.round(promoGradientStart.g + ((promoGradientEnd.g - promoGradientStart.g) * t));
+                                        const b = Math.round(promoGradientStart.b + ((promoGradientEnd.b - promoGradientStart.b) * t));
+                                        activeWordChars[i].style.color = `rgb(${r}, ${g}, ${b})`;
+                                    }
+                                }
+                            }
+                            applyPromoFeatureState(cardsPhaseProgress);
+
+                            if (!postPromoRefreshed && progress > 0.995) {
+                                postPromoRefreshed = true;
+                                requestAnimationFrame(() => {
+                                    ScrollTrigger.sort();
+                                    ScrollTrigger.refresh();
+                                });
+                            }
+                        }
+                    });
+
+                    ScrollTrigger.sort();
+                    ScrollTrigger.refresh();
+                };
+
+                if (promoScrollVideo.readyState >= 1) {
+                    setupPromoScrollVideo();
+                } else {
+                    promoScrollVideo.addEventListener('loadedmetadata', setupPromoScrollVideo, { once: true });
+                }
+
+                window.addEventListener('pageshow', () => {
+                    promoScrollVideo.pause();
+                });
+            }
+
+            // ==========================================
             // GSAP ANIMATIONS
             // ==========================================
             
@@ -637,7 +1256,7 @@
                   .from(".gsap-hero-btn", { y: 20, opacity: 0, duration: 1, ease: "power3.out" }, "-=0.6");
 
             gsap.to(".hero-bg", { yPercent: 30, ease: "none", scrollTrigger: { trigger: ".hero-wrapper", start: "top top", end: "bottom top", scrub: true }});
-            gsap.to(".gsap-notice", { opacity: 1, y: -20, duration: 1, ease: "power3.out", scrollTrigger: { trigger: ".gsap-notice", start: "top 90%" }});
+            gsap.to(".gsap-notice", { opacity: 1, y: -20, duration: 1, ease: "power3.out", delay: 0.15, scrollTrigger: { trigger: ".gsap-notice", start: "top 72%" }});
 
             // Generic Fade Ups
             gsap.utils.toArray('.gsap-fade-up').forEach(element => {
@@ -646,61 +1265,188 @@
 
             // Image Reveal & Parallax
             gsap.utils.toArray('.gsap-img-reveal').forEach(wrapper => {
-                const img = wrapper.querySelector('.gsap-img-scale');
-                gsap.from(wrapper, { clipPath: "inset(20% 20% 20% 20% round 32px)", opacity: 0, duration: 1.5, ease: "power4.out", scrollTrigger: { trigger: wrapper, start: "top 85%" }});
-                gsap.from(img, { scale: 1.3, duration: 2, ease: "power3.out", scrollTrigger: { trigger: wrapper, start: "top 85%" }});
+                const media = wrapper.querySelector('.gsap-img-scale');
+                gsap.from(wrapper, { opacity: 0, duration: 1, ease: "power3.out", scrollTrigger: { trigger: wrapper, start: "top 85%" }});
+                gsap.from(media, { scale: 1.08, opacity: 0, duration: 1.4, ease: "power3.out", scrollTrigger: { trigger: wrapper, start: "top 85%" }});
             });
 
-            // Split Section Stagger
-            gsap.from(".gsap-fade-up-stagger", { y: 30, opacity: 0, duration: 1, stagger: 0.15, ease: "power3.out", scrollTrigger: { trigger: ".right-col", start: "top 80%" }});
+            // About Title + Description (Scroll Order)
+            const aboutTitle = document.querySelector(".gsap-about-title");
+            const aboutTexts = gsap.utils.toArray(".gsap-about-text");
+            const aboutTitleLine1 = document.querySelector(".about-title-line.line-1");
+            const aboutTitleLine2 = document.querySelector(".about-title-line.line-2");
+            if (aboutTitle && aboutTexts.length) {
+                gsap.set(aboutTitle, { opacity: 0, y: 48 });
+                gsap.set(aboutTexts, { opacity: 0, y: 26 });
+                if (aboutTitleLine1) gsap.set(aboutTitleLine1, { "--about-line-fill": "0%" });
+                if (aboutTitleLine2) gsap.set(aboutTitleLine2, { "--about-line-fill": "0%" });
+
+                ScrollTrigger.create({
+                    trigger: aboutTitle,
+                    start: "top 65%",
+                    once: true,
+                    invalidateOnRefresh: true,
+                    onEnter: () => {
+                        gsap.to(aboutTitle, { y: 0, opacity: 1, duration: 1, ease: "power4.out", overwrite: "auto" });
+                        gsap.to(aboutTexts, { y: 0, opacity: 1, duration: 0.9, stagger: 0.16, ease: "power3.out", delay: 0.18, overwrite: "auto" });
+                    }
+                });
+
+                ScrollTrigger.create({
+                    trigger: aboutTitle,
+                    start: "top 65%",
+                    end: "top 30%",
+                    scrub: true,
+                    invalidateOnRefresh: true,
+                    onUpdate: (self) => {
+                        const progress = self.progress;
+                        const line1Progress = Math.min(progress * 2, 1);
+                        const line2Progress = Math.max((progress - 0.5) * 2, 0);
+                        if (aboutTitleLine1) {
+                            aboutTitleLine1.style.setProperty("--about-line-fill", `${line1Progress * 100}%`);
+                        }
+                        if (aboutTitleLine2) {
+                            aboutTitleLine2.style.setProperty("--about-line-fill", `${line2Progress * 100}%`);
+                        }
+                    }
+                });
+            }
+
+            // Brokerage Coverage Section
+            gsap.from(".brokerage-list-item", {
+                y: 26,
+                opacity: 0,
+                duration: 0.75,
+                stagger: 0.08,
+                ease: "power3.out",
+                scrollTrigger: { trigger: ".brokerage-layout", start: "top 82%" }
+            });
+            gsap.from(".gsap-brokerage-panel", {
+                y: 34,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out",
+                scrollTrigger: { trigger: ".brokerage-layout", start: "top 82%" }
+            });
 
             // Features Grid & SVGs
-            gsap.from(".gsap-feature", { y: 40, opacity: 0, duration: 1, stagger: 0.1, ease: "power3.out", scrollTrigger: { trigger: ".features-grid", start: "top 85%" }});
-            
-            const featurePaths = document.querySelectorAll('.draw-path-feature');
-            featurePaths.forEach(path => {
-                const length = path.getTotalLength();
-                gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
-            });
-            gsap.to(".draw-path-feature", {
-                strokeDashoffset: 0, duration: 2, stagger: 0.1, ease: "power2.out",
-                scrollTrigger: { trigger: ".features-grid", start: "top 80%" }
-            });
-
             // FAQ Stagger
             gsap.from(".gsap-faq", { y: 30, opacity: 0, duration: 0.8, stagger: 0.1, ease: "power2.out", scrollTrigger: { trigger: ".faq-grid", start: "top 85%" }});
+            // FAQ Accordion
+            const faqItems = gsap.utils.toArray('.faq-item');
+            const faqOpenBuffer = 4;
+            const setFaqState = (item, isOpen) => {
+                const btn = item.querySelector('.faq-question');
+                const answer = item.querySelector('.faq-answer');
+                if (!btn || !answer) return;
+                item.classList.toggle('is-open', isOpen);
+                btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                if (isOpen) {
+                    requestAnimationFrame(() => {
+                        answer.style.maxHeight = `${answer.scrollHeight + faqOpenBuffer}px`;
+                    });
+                } else {
+                    answer.style.maxHeight = '0px';
+                }
+            };
+            faqItems.forEach((item) => {
+                const isOpen = item.classList.contains('is-open');
+                setFaqState(item, isOpen);
+                const btn = item.querySelector('.faq-question');
+                if (!btn) return;
+                btn.addEventListener('click', () => {
+                    const willOpen = !item.classList.contains('is-open');
+                    faqItems.forEach((other) => setFaqState(other, false));
+                    setFaqState(item, willOpen);
+                });
+            });
+            window.addEventListener('resize', () => {
+                faqItems.forEach((item) => {
+                    if (!item.classList.contains('is-open')) return;
+                    const answer = item.querySelector('.faq-answer');
+                    if (answer) answer.style.maxHeight = `${answer.scrollHeight + faqOpenBuffer}px`;
+                });
+            });
 
             // Step Line
             gsap.to(".svg-line-progress", { scaleY: 1, ease: "none", scrollTrigger: { trigger: ".steps-container", start: "top center", end: "bottom center", scrub: true }});
             gsap.utils.toArray('.step').forEach(step => { gsap.to(step, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", scrollTrigger: { trigger: step, start: "top 75%" }});});
 
             // Services Background Animasyonu (Genişlik)
-            gsap.from(".services-bg", { 
-                width: "70%", borderRadius: "60px", duration: 1.5, ease: "power4.inOut", 
-                scrollTrigger: { trigger: ".services-wrapper", start: "top 80%", end: "top 20%", scrub: 1 }
-            });
+            const servicesBg = document.querySelector(".services-bg");
+            if (servicesBg) {
+                const applyServicesBgProgress = (progress) => {
+                    const p = Math.max(0, Math.min(1, progress));
+                    const scaleX = 0.7 + (0.3 * p);
+                    const radius = 60 - (20 * p);
+                    servicesBg.style.transform = `translateX(-50%) scaleX(${scaleX})`;
+                    servicesBg.style.borderRadius = `${radius}px`;
+                };
 
-            gsap.from(".gsap-service-title", { y: 40, opacity: 0, duration: 1, stagger: 0.1, ease: "power3.out", scrollTrigger: { trigger: ".services-wrapper", start: "top 60%" }});
+                applyServicesBgProgress(0);
 
-            const servicePaths = document.querySelectorAll('.draw-path-dark');
-            servicePaths.forEach(path => {
-                const length = path.getTotalLength();
-                gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
-            });
-            gsap.from(".gsap-service-card", {
-                y: 60, opacity: 0, duration: 1.2, stagger: 0.2, ease: "power3.out",
-                scrollTrigger: { trigger: ".service-grid", start: "top 75%" },
-                onStart: () => { gsap.to(".gsap-service-card .draw-path-dark", { strokeDashoffset: 0, duration: 2, stagger: 0.1, ease: "power2.inOut" }); }
-            });
-
-            // Route SVG Animation
-            const routePath = document.querySelector('.draw-route');
-            if(routePath) {
-                const routeLength = routePath.getTotalLength();
-                gsap.set(routePath, { strokeDasharray: routeLength, strokeDashoffset: routeLength });
-                gsap.to(routePath, { strokeDashoffset: 0, duration: 2, ease: "power2.out", scrollTrigger: { trigger: ".route-graphic", start: "top 85%" }});
-                gsap.from(".route-pin", { scale: 0, opacity: 0, duration: 0.5, stagger: 0.2, delay: 1, ease: "back.out(1.7)", scrollTrigger: { trigger: ".route-graphic", start: "top 85%" }});
+                ScrollTrigger.create({
+                    trigger: ".services-wrapper",
+                    start: "top bottom",
+                    end: "top 20%",
+                    invalidateOnRefresh: true,
+                    onRefreshInit: () => applyServicesBgProgress(0),
+                    onRefresh: (self) => applyServicesBgProgress(self.progress),
+                    onUpdate: (self) => applyServicesBgProgress(self.progress)
+                });
             }
+
+            const serviceTitleEls = gsap.utils.toArray('.gsap-service-title');
+            const serviceCardEls = gsap.utils.toArray('.gsap-service-card');
+            const servicePaths = document.querySelectorAll('.draw-path-dark');
+
+            const resetServicePaths = () => {
+                servicePaths.forEach(path => {
+                    const length = path.getTotalLength();
+                    gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
+                });
+            };
+
+            gsap.set(serviceTitleEls, { opacity: 0, y: 40 });
+            gsap.set(serviceCardEls, { opacity: 0, y: 60 });
+            resetServicePaths();
+
+            ScrollTrigger.create({
+                trigger: ".services-wrapper",
+                start: "top 90%",
+                invalidateOnRefresh: true,
+                onEnter: () => gsap.to(serviceTitleEls, { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power3.out", overwrite: "auto" }),
+                onEnterBack: () => gsap.to(serviceTitleEls, { y: 0, opacity: 1, duration: 0.8, stagger: 0.08, ease: "power3.out", overwrite: "auto" }),
+                onLeaveBack: () => gsap.set(serviceTitleEls, { opacity: 0, y: 40 })
+            });
+
+            ScrollTrigger.create({
+                trigger: ".service-grid",
+                start: "top 88%",
+                invalidateOnRefresh: true,
+                onEnter: () => {
+                    gsap.to(serviceCardEls, { y: 0, opacity: 1, duration: 1.2, stagger: 0.2, ease: "power3.out", overwrite: "auto" });
+                    gsap.to(servicePaths, { strokeDashoffset: 0, duration: 2, stagger: 0.1, ease: "power2.inOut", overwrite: "auto" });
+                },
+                onEnterBack: () => {
+                    gsap.to(serviceCardEls, { y: 0, opacity: 1, duration: 0.9, stagger: 0.12, ease: "power3.out", overwrite: "auto" });
+                    gsap.to(servicePaths, { strokeDashoffset: 0, duration: 1.4, stagger: 0.08, ease: "power2.out", overwrite: "auto" });
+                },
+                onLeaveBack: () => {
+                    gsap.set(serviceCardEls, { opacity: 0, y: 60 });
+                    resetServicePaths();
+                }
+            });
+
+            // Premium Service Area cards
+            gsap.from(".gsap-sa-card", {
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                stagger: 0.15,
+                ease: "power3.out",
+                scrollTrigger: { trigger: ".sa-cards-wrapper", start: "top 80%" }
+            });
 
             // Form
             gsap.from(".gsap-form", { scale: 0.98, opacity: 0, duration: 1.2, ease: "power4.out", scrollTrigger: { trigger: ".quote-section", start: "top 75%" }});
@@ -708,6 +1454,13 @@
 
             // Footer
             gsap.from(".gsap-footer", { y: 50, opacity: 0, duration: 1.5, ease: "power3.out", scrollTrigger: { trigger: ".footer-wrapper", start: "top 90%" }});
+
+            // Pin/loaded media sonrası tüm tetikleyicileri doğru noktaya hizala
+            ScrollTrigger.addEventListener("refresh", () => lenis.resize());
+            window.addEventListener('load', () => {
+                ScrollTrigger.sort();
+                ScrollTrigger.refresh();
+            });
         });
     </script>
 </body>
