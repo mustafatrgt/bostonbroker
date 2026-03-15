@@ -1,0 +1,21 @@
+{
+  "name": "BostonBroker",
+  "short_name": "BostonBroker",
+  "icons": [
+    {
+      "src": "assets/favicons/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/favicons/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "maskable"
+    }
+  ],
+  "theme_color": "#0D3C74",
+  "background_color": "#ffffff",
+  "display": "standalone"
+}

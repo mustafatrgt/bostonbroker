@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="BostonBroker favicon">
+  <defs>
+    <linearGradient id="bbBlue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0D3C74"/>
+      <stop offset="100%" stop-color="#072E5E"/>
+    </linearGradient>
+    <mask id="cutoutB">
+      <rect width="512" height="512" fill="#fff" rx="112"/>
+      <rect x="132" y="96" width="72" height="320" rx="24" fill="#000"/>
+      <rect x="184" y="96" width="208" height="144" rx="72" fill="#000"/>
+      <rect x="184" y="272" width="216" height="144" rx="72" fill="#000"/>
+      <rect x="240" y="144" width="104" height="48" rx="24" fill="#fff"/>
+      <rect x="240" y="320" width="112" height="48" rx="24" fill="#fff"/>
+    </mask>
+  </defs>
+
+  <rect width="512" height="512" rx="112" fill="url(#bbBlue)" mask="url(#cutoutB)"/>
+</svg>
