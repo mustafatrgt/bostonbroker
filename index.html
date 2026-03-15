@@ -15,6 +15,8 @@
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <style>
         /* Variables */
@@ -66,6 +68,17 @@
             object-fit: cover;
             display: block;
             transform-origin: center;
+        }
+        .about-steps-mask {
+            height: auto !important;
+            background-color: transparent;
+        }
+        .about-steps-video {
+            width: 100%;
+            height: auto !important;
+            object-fit: unset !important;
+            object-position: center center;
+            background-color: transparent;
         }
         
         .image-tall { height: 400px; } 
@@ -405,6 +418,7 @@
         }
         .sa-map-inner { margin-bottom: 50px; position: relative; }
         .sa-route-svg { width: 100%; height: auto; display: block; }
+        .map-bg-roads { display: none; }
         .map-line-light { fill: none; stroke: rgba(255,255,255,0.02); stroke-width: 1.5; }
         .map-line-medium { fill: none; stroke: rgba(255,255,255,0.04); stroke-width: 2; stroke-linecap: round; }
         .map-line-thick { fill: none; stroke: rgba(255,255,255,0.05); stroke-width: 6; stroke-linecap: round; }
@@ -434,16 +448,18 @@
         .sa-map-card h3 { font-size: 2.2rem; margin-bottom: 15px; color: var(--white); letter-spacing: -0.02em; position: relative; z-index: 2; }
         .sa-map-card p { color: #a1a1aa; font-size: 1.05rem; margin: 0; line-height: 1.6; position: relative; z-index: 2; }
         .sa-right-header h2 { font-size: 2.2rem; margin-bottom: 40px; max-width: 500px; }
-        .sa-cards-wrapper { display: flex; flex-direction: column; gap: 20px; }
-        .sa-req-card { background-color: var(--light-bg); border-radius: 24px; padding: 30px; display: flex; align-items: flex-start; gap: 24px; transition: transform 0.4s ease, box-shadow 0.4s ease, background-color 0.4s ease; }
+        .sa-cards-wrapper { display: grid; grid-template-columns: 1fr; row-gap: 22px; }
+        .sa-cards-wrapper > * { margin: 0 !important; }
+        .sa-req-card { background-color: var(--light-bg); border-radius: 24px; padding: 28px 30px; display: flex; align-items: flex-start; gap: 24px; min-height: auto; position: relative; z-index: 1; transition: transform 0.4s ease, box-shadow 0.4s ease, background-color 0.4s ease; }
         .sa-req-card:hover { transform: translateX(10px); background-color: var(--white); box-shadow: 0 15px 35px rgba(0,0,0,0.04); }
         .sa-icon-box { background-color: var(--white); width: 60px; height: 60px; border-radius: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.02); transition: background-color 0.4s ease; }
         .sa-req-card:hover .sa-icon-box { background-color: var(--dark-bg); }
         .sa-icon-box svg { width: 28px; height: 28px; stroke: var(--text-dark); stroke-width: 1.5; fill: none; stroke-linecap: round; stroke-linejoin: round; transition: stroke 0.4s ease; }
         .sa-req-card:hover .sa-icon-box svg { stroke: var(--white); }
-        .sa-card-text h4 { font-size: 1.25rem; margin-bottom: 8px; color: var(--text-dark); }
+        .sa-card-text { display: flex; flex-direction: column; gap: 8px; }
+        .sa-card-text h4 { margin: 0; font-size: 1.25rem; color: var(--text-dark); }
         .sa-card-text p { margin: 0; font-size: 0.95rem; color: var(--text-gray); }
-        .sa-footer-note { margin-top: 20px; padding: 30px; background-color: var(--white); border-radius: 24px; border: 1px solid var(--border-color); }
+        .sa-footer-note { margin: 0; padding: 30px; background-color: var(--white); border-radius: 24px; border: 1px solid var(--border-color); position: relative; z-index: 1; overflow: hidden; }
         .sa-footer-note p { margin: 0; font-size: 0.95rem; color: var(--text-gray); }
 
         /* FAQ Section */
@@ -487,10 +503,145 @@
         .quote-form { background: var(--light-bg); padding: 60px; border-radius: 40px; max-width: 900px; margin: 0 auto; }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 30px; }
         .form-group.full-width { grid-column: 1 / -1; }
+        .form-group.number-field { position: relative; }
         .form-group label { display: block; margin-bottom: 10px; font-size: 0.85rem; font-weight: 600; color: var(--text-gray); text-transform: uppercase; letter-spacing: 1px; }
-        .form-group input, .form-group textarea { width: 100%; padding: 18px 20px; border: 1px solid transparent; border-radius: 16px; font-size: 1rem; background: var(--white); transition: border-color 0.3s ease; }
-        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--text-dark); }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 18px 20px; border: 1px solid transparent; border-radius: 16px; font-size: 1rem; background: var(--white); transition: border-color 0.3s ease; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--text-dark); }
+        .stepper-wrap { position: relative; }
+        .stepper-input {
+            padding-right: 72px !important;
+            -moz-appearance: textfield;
+        }
+        .stepper-input::-webkit-outer-spin-button,
+        .stepper-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .stepper-controls {
+            position: absolute;
+            top: 5px;
+            bottom: 5px;
+            right: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            width: 38px;
+            border-left: 1px solid #f8f9fa;
+            border-radius: 0;
+            background: transparent;
+            overflow: hidden;
+        }
+        .stepper-btn {
+            width: 100%;
+            height: 50%;
+            border: 0;
+            border-radius: 0;
+            background: transparent;
+            color: var(--text-dark);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 0;
+        }
+        .stepper-btn + .stepper-btn {
+            border-top: 1px solid #f8f9fa;
+        }
+        .stepper-btn:hover {
+            background: #f6f7f9;
+            color: var(--text-dark);
+        }
+        .stepper-btn:active {
+            background: #e4e9f2;
+        }
+        .stepper-btn svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            stroke-width: 2.4;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .form-group .picker-input {
+            cursor: pointer;
+            padding-right: 56px;
+            background-repeat: no-repeat;
+            background-position: right 18px center;
+            background-size: 22px 22px;
+        }
+        .form-group select.picker-input {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+        .form-group select.picker-input:invalid {
+            color: #7a7a7a;
+        }
+        #quoteDate.picker-input {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23131416' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E");
+        }
+        #quoteTime.picker-input {
+            background-image:
+                url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='%23131416' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpolyline points='12,7 12,12 15,14'/%3E%3C/svg%3E\"),
+                url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23131416' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\");
+            background-position: right 40px center, right 16px center;
+            background-size: 20px 20px, 16px 16px;
+        }
         .form-reassurance { font-size: 0.85rem; text-align: center; margin-top: 25px; color: var(--text-gray); max-width: 700px; margin-inline: auto; }
+        .flatpickr-calendar {
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+            font-family: 'Inter', sans-serif;
+        }
+        .flatpickr-calendar:before,
+        .flatpickr-calendar:after {
+            display: none !important;
+        }
+        .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
+            background: var(--text-dark);
+            border-color: var(--text-dark);
+        }
+        .flatpickr-day.today {
+            border-color: #4b5563;
+        }
+        .flatpickr-current-month .numInputWrapper span {
+            display: none !important;
+        }
+        .flatpickr-current-month .numInput.cur-year {
+            appearance: textfield;
+            -webkit-appearance: none;
+            -moz-appearance: textfield;
+        }
+        .flatpickr-current-month .fp-year-select {
+            margin-left: 6px;
+            padding: 2px 24px 2px 6px;
+            border: 0;
+            border-radius: 8px;
+            background-color: transparent;
+            color: var(--text-dark);
+            font-size: 1.05rem;
+            font-weight: 600;
+            line-height: 1.2;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23131416' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 4px center;
+            background-size: 14px 14px;
+            cursor: pointer;
+        }
+        .flatpickr-current-month .fp-year-select:focus {
+            outline: none;
+        }
+        .flatpickr-current-month .numInput.cur-year::-webkit-outer-spin-button,
+        .flatpickr-current-month .numInput.cur-year::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
 
         /* Footer */
         .footer-wrapper { padding: 0 10px 10px; }
@@ -501,6 +652,37 @@
         .footer-col a:hover { color: var(--white); }
         .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; display: flex; flex-direction: column; gap: 15px; color: #a1a1aa; font-size: 0.85rem; }
         .footer-bottom-flex { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 10px; }
+        .footer-meta { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+        .footer-created-by { color: #a1a1aa; margin: 0; }
+        .footer-created-by a { color: #c8ced9; text-decoration: none; }
+        .footer-created-by a:hover { color: var(--white); }
+        .footer-links-right { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+        .footer-socials { display: flex; align-items: center; gap: 10px; }
+        .footer-social-link {
+            width: 34px;
+            height: 34px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.16);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #a1a1aa;
+            transition: var(--transition);
+        }
+        .footer-social-link:hover {
+            color: var(--white);
+            border-color: rgba(255,255,255,0.36);
+            transform: translateY(-1px);
+        }
+        .footer-social-link svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
         .footer-bottom-flex a {
             color: #a1a1aa;
             text-decoration: none;
@@ -510,6 +692,18 @@
 
         /* Responsive */
         @media (max-width: 992px) {
+            .hero-wrapper {
+                height: calc(100dvh - 20px);
+                margin: 10px;
+                border-radius: 30px;
+            }
+            .hero-bg {
+                top: 0;
+                height: 100%;
+            }
+            .hero-video {
+                object-position: center center;
+            }
             .how-it-works { grid-template-columns: 1fr; gap: 60px; }
             .features-grid, .service-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
             .footer-grid { grid-template-columns: 1fr; gap: 40px; }
@@ -524,13 +718,29 @@
             nav .nav-links { display: none; }
             .image-tall { height: 350px; }
             section { padding: 100px 0; }
+            .faq-grid { gap: 16px; }
+            .faq-item { border-radius: 24px; }
+            .faq-question { padding: 22px 24px; }
+            .faq-answer { padding: 0 24px; }
+            .faq-item.is-open .faq-answer { padding-bottom: 20px; }
             .services-wrapper { margin: 60px 10px; padding: 100px 5%; }
             .promo-video-wrapper { margin-top: 25px; border-radius: 34px; }
             .promo-video-frame { width: min(68vw, 620px); height: min(44vh, 360px); }
             .promo-feature-stage .features-grid { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 768px) {
-            .hero-wrapper { height: 85vh; border-radius: 30px; }
+            .hero-wrapper {
+                height: calc(100dvh - 20px);
+                margin: 10px;
+                border-radius: 24px;
+            }
+            .hero-bg {
+                top: 0;
+                height: 100%;
+            }
+            .hero-video {
+                object-position: 40% center;
+            }
             .features-grid, .service-grid, .form-grid { grid-template-columns: 1fr; }
             .quote-form { padding: 30px; border-radius: 30px; }
             .services-wrapper { padding: 80px 5%; }
@@ -546,9 +756,15 @@
             .brokerage-panel p { font-size: 1rem; }
             .faq-header { margin-bottom: 30px; }
             .faq-section { padding-top: 92px; padding-bottom: 56px; }
+            .faq-grid { gap: 14px; }
+            .faq-item { border-radius: 22px; padding: 0; }
+            .faq-question { padding: 18px 20px; gap: 14px; }
+            .faq-question h4 { font-size: 1.05rem; line-height: 1.35; }
+            .faq-answer { padding: 0 20px; }
+            .faq-item.is-open .faq-answer { padding-bottom: 16px; }
             .premium-sa-section { padding-top: 56px; padding-bottom: 100px; }
             .sa-map-card { padding: 30px; border-radius: 30px; }
-            .sa-req-card { padding: 20px; flex-direction: column; gap: 15px; }
+            .sa-req-card { padding: 20px; flex-direction: column; gap: 15px; min-height: auto; }
             .sa-req-card:hover { transform: translateY(-5px); }
             .services-bg { border-radius: 30px; }
             .promo-video-wrapper { margin-top: 13px; border-radius: 30px; padding: 10px; }
@@ -558,7 +774,7 @@
             .promo-feature-stage .features-grid { grid-template-columns: 1fr; }
             .promo-feature-stage .feature-card { padding: 22px; border-radius: 22px; }
             .footer-bottom-flex { flex-direction: column; gap: 15px; text-align: left; align-items: flex-start; }
-            .faq-item { padding: 30px; }
+            .footer-links-right { width: 100%; justify-content: space-between; }
         }
     </style>
 </head>
@@ -588,7 +804,8 @@
             
             <!-- Video: autoplay özelliği JS ile kontrol edilecek -->
             <video id="heroVideo" muted loop playsinline preload="metadata" class="hero-video" poster="assets/hero-background-poster.webp">
-                <source src="assets/hero-background-video-2.mp4" type="video/mp4">
+                <source src="assets/hero-background-video1.mp4" type="video/mp4">
+                <source src="assets/hero-background-video1.webm" type="video/webm">
                 Tarayıcınız video etiketini desteklemiyor.
             </video>
         </div>
@@ -610,8 +827,8 @@
     <section id="about" class="container">
         <div class="how-it-works">
             <div class="about-text">
-                <div class="img-mask image-wide gsap-img-reveal">
-                    <video class="gsap-img-scale" autoplay muted loop playsinline preload="metadata" aria-label="Decorative animated driving scene">
+                <div class="img-mask image-wide gsap-img-reveal about-steps-mask">
+                    <video class="gsap-img-scale about-steps-video" autoplay muted loop playsinline preload="metadata" aria-label="Decorative animated driving scene">
                         <source src="assets/fun-3d-cartoon-baby-rocker-driving-2026-01-28-04-35-00-utc.webm" type="video/webm">
                         Tarayıcınız video etiketini desteklemiyor.
                     </video>
@@ -915,34 +1132,34 @@
                 </div>
                 <div class="sa-cards-wrapper">
                     <div class="sa-req-card gsap-sa-card">
-                        <div class="sa-icon-box"><svg viewBox="0 0 24 24"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.2-1.1.6L3 8l6 4-4 4-2.5-.5L2 16l4.5 1 1 4.5 1.5-.5-.5-2.5 4-4 4 6l1.2-.7c.4-.2.7-.6.6-1.1z"/></svg></div>
+                        <div class="sa-icon-box"><svg viewBox="0 0 24 24"><path class="draw-path-sa" d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.2-1.1.6L3 8l6 4-4 4-2.5-.5L2 16l4.5 1 1 4.5 1.5-.5-.5-2.5 4-4 4 6l1.2-.7c.4-.2.7-.6.6-1.1z"/></svg></div>
                         <div class="sa-card-text">
                             <h4>Logan Airport transportation</h4>
                             <p>Reliable coordination for departures and arrivals.</p>
                         </div>
                     </div>
                     <div class="sa-req-card gsap-sa-card">
-                        <div class="sa-icon-box"><svg viewBox="0 0 24 24"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/></svg></div>
+                        <div class="sa-icon-box"><svg viewBox="0 0 24 24"><path class="draw-path-sa" d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/></svg></div>
                         <div class="sa-card-text">
                             <h4>Hotel pickup and drop-off</h4>
                             <p>Seamless transfers directly from your hotel lobby.</p>
                         </div>
                     </div>
                     <div class="sa-req-card gsap-sa-card">
-                        <div class="sa-icon-box"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+                        <div class="sa-icon-box"><svg viewBox="0 0 24 24"><rect class="draw-path-sa" x="2" y="7" width="20" height="14" rx="2" ry="2"/><path class="draw-path-sa" d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
                         <div class="sa-card-text">
                             <h4>Business and executive rides</h4>
                             <p>Professional, discreet, and strictly on-time routing.</p>
                         </div>
                     </div>
                     <div class="sa-req-card gsap-sa-card">
-                        <div class="sa-icon-box"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+                        <div class="sa-icon-box"><svg viewBox="0 0 24 24"><path class="draw-path-sa" d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle class="draw-path-sa" cx="12" cy="10" r="3"/></svg></div>
                         <div class="sa-card-text">
                             <h4>Private local transportation</h4>
                             <p>Point-to-point travel across the city and suburbs.</p>
                         </div>
                     </div>
-                    <div class="sa-footer-note gsap-sa-card">
+                    <div class="sa-footer-note">
                         <p>Our transportation brokerage model is designed to help travelers and businesses request dependable private transportation options across the Greater Boston area.</p>
                     </div>
                 </div>
@@ -965,10 +1182,41 @@
                     <div class="form-group full-width"><label>Email Address</label><input type="email" name="Email" required placeholder="john@example.com"></div>
                     <div class="form-group full-width"><label>Pickup Location</label><input type="text" name="Pickup" required placeholder="Street address or Airport"></div>
                     <div class="form-group full-width"><label>Drop-off Location</label><input type="text" name="Dropoff" required placeholder="Street address or Hotel"></div>
-                    <div class="form-group"><label>Date</label><input type="date" name="Date" required></div>
-                    <div class="form-group"><label>Time</label><input type="time" name="Time" required></div>
-                    <div class="form-group"><label>Passengers</label><input type="number" name="Passengers" min="1" required placeholder="1"></div>
-                    <div class="form-group"><label>Luggage</label><input type="number" name="Bags" min="0" required placeholder="0"></div>
+                    <div class="form-group"><label>Date</label><input type="text" id="quoteDate" class="picker-input" name="Date" lang="en-US" required placeholder="MM/DD/YYYY" readonly></div>
+                    <div class="form-group">
+                        <label>Time</label>
+                        <select id="quoteTime" class="picker-input" name="Time" required>
+                            <option value="" selected disabled>Select time (AM/PM)</option>
+                        </select>
+                    </div>
+                    <div class="form-group number-field">
+                        <label>Passengers</label>
+                        <div class="stepper-wrap">
+                            <input id="passengersInput" class="stepper-input" type="number" name="Passengers" min="1" step="1" required placeholder="1" value="1">
+                            <div class="stepper-controls" aria-hidden="true">
+                                <button type="button" class="stepper-btn" data-target="passengersInput" data-action="inc" aria-label="Increase passengers">
+                                    <svg viewBox="0 0 24 24"><path d="m6 14 6-6 6 6"></path></svg>
+                                </button>
+                                <button type="button" class="stepper-btn" data-target="passengersInput" data-action="dec" aria-label="Decrease passengers">
+                                    <svg viewBox="0 0 24 24"><path d="m6 10 6 6 6-6"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group number-field">
+                        <label>Luggage</label>
+                        <div class="stepper-wrap">
+                            <input id="luggageInput" class="stepper-input" type="number" name="Bags" min="0" step="1" required placeholder="0" value="0">
+                            <div class="stepper-controls" aria-hidden="true">
+                                <button type="button" class="stepper-btn" data-target="luggageInput" data-action="inc" aria-label="Increase luggage count">
+                                    <svg viewBox="0 0 24 24"><path d="m6 14 6-6 6 6"></path></svg>
+                                </button>
+                                <button type="button" class="stepper-btn" data-target="luggageInput" data-action="dec" aria-label="Decrease luggage count">
+                                    <svg viewBox="0 0 24 24"><path d="m6 10 6 6 6-6"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group full-width"><label>Notes</label><textarea name="Notes" rows="3" placeholder="Flight numbers, child seats, etc."></textarea></div>
                 </div>
                 
@@ -1000,8 +1248,24 @@
             <div class="footer-bottom">
                 <p style="max-width: 800px; line-height: 1.6;"><strong>Disclaimer:</strong> BostonBroker operates strictly as a transportation broker. We do not own or operate vehicles. All transportation services are provided by independent third-party transportation providers.</p>
                 <div class="footer-bottom-flex">
-                    <p style="margin: 0;">&copy; 2024 BostonBroker. All Rights Reserved.</p>
-                    <div style="display: flex; gap: 20px;"><a href="#">Privacy Policy</a><a href="#">Terms & Conditions</a></div>
+                    <div class="footer-meta">
+                        <p style="margin: 0;">&copy; 2026 BostonBroker. All Rights Reserved.</p>
+                        <p class="footer-created-by">Created by <a href="https://github.com/mustafatrgt" target="_blank" rel="noopener noreferrer">Mustafa Turgut</a></p>
+                    </div>
+                    <div class="footer-links-right">
+                        <div style="display: flex; gap: 20px;"><a href="#">Privacy Policy</a><a href="#">Terms & Conditions</a></div>
+                        <div class="footer-socials">
+                            <a class="footer-social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" ry="5"></rect><circle cx="12" cy="12" r="3.5"></circle><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"></circle></svg>
+                            </a>
+                            <a class="footer-social-link" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                                <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-13h4v2"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                            </a>
+                            <a class="footer-social-link" href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="X">
+                                <svg viewBox="0 0 24 24"><path d="M4 4l16 16"></path><path d="M20 4L4 20"></path></svg>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </footer>
@@ -1016,6 +1280,112 @@
         gsap.registerPlugin(ScrollTrigger);
 
         document.addEventListener("DOMContentLoaded", () => {
+            // Date/Time pickers (English format, consistent UI)
+            const setupDateYearSelect = (instance) => {
+                const yearInput = instance.currentYearElement;
+                if (!yearInput || yearInput.dataset.yearSelectReady === "1") return;
+
+                yearInput.dataset.yearSelectReady = "1";
+                yearInput.style.display = "none";
+
+                const yearWrap = yearInput.parentElement;
+                if (!yearWrap) return;
+
+                const yearSelect = document.createElement("select");
+                yearSelect.className = "fp-year-select";
+                yearSelect.setAttribute("aria-label", "Select year");
+
+                const baseYear = new Date().getFullYear();
+                const minYear = baseYear;
+                const maxYear = baseYear + 8;
+                for (let year = minYear; year <= maxYear; year += 1) {
+                    const option = document.createElement("option");
+                    option.value = String(year);
+                    option.textContent = String(year);
+                    yearSelect.appendChild(option);
+                }
+
+                yearSelect.value = String(instance.currentYear);
+                yearSelect.addEventListener("change", (event) => {
+                    const nextYear = Number(event.target.value);
+                    if (!Number.isNaN(nextYear)) {
+                        instance.changeYear(nextYear);
+                    }
+                });
+
+                yearWrap.appendChild(yearSelect);
+
+                const syncYearSelect = () => {
+                    yearSelect.value = String(instance.currentYear);
+                };
+
+                instance.config.onYearChange.push(syncYearSelect);
+                instance.config.onMonthChange.push(syncYearSelect);
+                instance.config.onOpen.push(syncYearSelect);
+            };
+
+            flatpickr("#quoteDate", {
+                dateFormat: "m/d/Y",
+                allowInput: false,
+                disableMobile: true,
+                minDate: "today",
+                monthSelectorType: "static",
+                onReady: (_, __, instance) => setupDateYearSelect(instance)
+            });
+            const quoteTimeSelect = document.getElementById("quoteTime");
+            if (quoteTimeSelect) {
+                const stepMinutes = 15;
+                const amGroup = document.createElement("optgroup");
+                const pmGroup = document.createElement("optgroup");
+                amGroup.label = "AM";
+                pmGroup.label = "PM";
+
+                for (let total = 0; total <= (23 * 60 + 45); total += stepMinutes) {
+                    const hours24 = Math.floor(total / 60);
+                    const minutes = total % 60;
+                    const period = hours24 >= 12 ? "PM" : "AM";
+                    const hours12 = (hours24 % 12) || 12;
+                    const minuteLabel = String(minutes).padStart(2, "0");
+                    const label = `${hours12}:${minuteLabel} ${period}`;
+                    const option = document.createElement("option");
+                    option.value = label;
+                    option.textContent = label;
+                    if (period === "AM") {
+                        amGroup.appendChild(option);
+                    } else {
+                        pmGroup.appendChild(option);
+                    }
+                }
+
+                quoteTimeSelect.appendChild(amGroup);
+                quoteTimeSelect.appendChild(pmGroup);
+            }
+
+            const clampToStep = (value, step) => {
+                const decimals = (String(step).split(".")[1] || "").length;
+                return Number(value.toFixed(decimals));
+            };
+
+            document.querySelectorAll(".stepper-btn").forEach((button) => {
+                button.addEventListener("click", () => {
+                    const targetId = button.getAttribute("data-target");
+                    const action = button.getAttribute("data-action");
+                    const input = targetId ? document.getElementById(targetId) : null;
+                    if (!input) return;
+
+                    const min = input.min !== "" ? Number(input.min) : -Infinity;
+                    const step = input.step !== "" ? Number(input.step) : 1;
+                    let current = input.value === "" ? (Number.isFinite(min) ? min : 0) : Number(input.value);
+                    if (Number.isNaN(current)) current = Number.isFinite(min) ? min : 0;
+
+                    const delta = action === "inc" ? step : -step;
+                    let next = current + delta;
+                    if (next < min) next = min;
+                    input.value = String(clampToStep(next, step));
+                    input.dispatchEvent(new Event("input", { bubbles: true }));
+                    input.dispatchEvent(new Event("change", { bubbles: true }));
+                });
+            });
             
             // ==========================================
             // VİDEO OPTİMİZASYONU VE OYNATMA MANTIĞI
@@ -1439,13 +1809,43 @@
             });
 
             // Premium Service Area cards
-            gsap.from(".gsap-sa-card", {
-                y: 50,
+            const saPaths = document.querySelectorAll('.draw-path-sa');
+            const resetSaPaths = () => {
+                saPaths.forEach((path) => {
+                    if (typeof path.getTotalLength !== "function") return;
+                    const length = path.getTotalLength();
+                    gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
+                });
+            };
+            resetSaPaths();
+
+            gsap.from(".sa-req-card.gsap-sa-card", {
                 opacity: 0,
-                duration: 1,
+                duration: 0.9,
                 stagger: 0.15,
-                ease: "power3.out",
+                ease: "power2.out",
                 scrollTrigger: { trigger: ".sa-cards-wrapper", start: "top 80%" }
+            });
+            gsap.from(".sa-footer-note", {
+                opacity: 0,
+                duration: 0.9,
+                delay: 0.2,
+                ease: "power2.out",
+                scrollTrigger: { trigger: ".sa-cards-wrapper", start: "top 80%" }
+            });
+            ScrollTrigger.create({
+                trigger: ".sa-cards-wrapper",
+                start: "top 82%",
+                invalidateOnRefresh: true,
+                onEnter: () => {
+                    gsap.to(saPaths, { strokeDashoffset: 0, duration: 2, stagger: 0.08, ease: "power2.inOut", overwrite: "auto" });
+                },
+                onEnterBack: () => {
+                    gsap.to(saPaths, { strokeDashoffset: 0, duration: 1.3, stagger: 0.06, ease: "power2.out", overwrite: "auto" });
+                },
+                onLeaveBack: () => {
+                    resetSaPaths();
+                }
             });
 
             // Form
