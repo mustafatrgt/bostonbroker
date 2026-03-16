@@ -884,7 +884,8 @@
                 <span class="promo-scroll-title-line line-2">Transportation Network</span>
             </h2>
             <div class="promo-video-frame">
-                <video id="promoScrollVideo" muted playsinline preload="auto" poster="assets/promo-scroll-video-poster.webp" aria-label="Decorative animated driving scene">
+                <video id="promoScrollVideo" muted playsinline webkit-playsinline preload="auto" poster="assets/promo-scroll-video-poster.webp" aria-label="Decorative animated driving scene">
+                    <source src="assets/fun-3d-cartoon-baby-rocker-driving-2026-01-28-04-36-00-utc-scrub.mp4" type="video/mp4">
                     <source src="assets/fun-3d-cartoon-baby-rocker-driving-2026-01-28-04-36-00-utc-scrub.webm" type="video/webm">
                     Tarayıcınız video etiketini desteklemiyor.
                 </video>
@@ -1446,9 +1447,36 @@
             if (promoScrollVideo && promoVideoWrapper) {
                 let promoScrollTrigger = null;
                 let postPromoRefreshed = false;
+                let promoRafId = 0;
+                let pendingPromoTime = null;
                 const promoFeaturePathLengths = [];
                 const promoGradientStart = { r: 101, g: 208, b: 255 }; // #65D0FF
                 const promoGradientEnd = { r: 40, g: 116, b: 177 };    // #2874B1
+                const ua = navigator.userAgent || "";
+                const isSafari = /Safari/i.test(ua) && !/Chrome|CriOS|Edg|OPR|SamsungBrowser|Android/i.test(ua);
+
+                const applyPromoVideoTime = (targetTime) => {
+                    const safeTarget = Math.max(0, targetTime || 0);
+
+                    if (isSafari) {
+                        // Safari struggles with ultra-frequent seeks; snap and batch in rAF.
+                        const snapped = Math.round(safeTarget * 30) / 30;
+                        if (Math.abs((promoScrollVideo.currentTime || 0) - snapped) < (1 / 45)) return;
+                        pendingPromoTime = snapped;
+                        if (promoRafId) return;
+                        promoRafId = requestAnimationFrame(() => {
+                            promoRafId = 0;
+                            if (pendingPromoTime == null) return;
+                            promoScrollVideo.currentTime = pendingPromoTime;
+                            pendingPromoTime = null;
+                        });
+                        return;
+                    }
+
+                    if (Math.abs((promoScrollVideo.currentTime || 0) - safeTarget) > 0.008) {
+                        promoScrollVideo.currentTime = safeTarget;
+                    }
+                };
 
                 const splitPromoTitleToChars = () => {
                     promoTitleLines.forEach((line) => {
@@ -1553,7 +1581,7 @@
                             const cardsStart = videoScrubEnd + 0.05;
                             const videoPhaseProgress = Math.min(progress / videoScrubEnd, 1);
                             const cardsPhaseProgress = Math.max((progress - cardsStart) / (1 - cardsStart), 0);
-                            promoScrollVideo.currentTime = promoDuration * videoPhaseProgress;
+                            applyPromoVideoTime(promoDuration * videoPhaseProgress);
                             if (promoVideoFrame) {
                                 const videoExitProgress = Math.max(0, Math.min(1, (progress - videoScrubEnd) / (videoGoneAt - videoScrubEnd)));
                                 const videoScale = Math.max(0, 1 - (videoExitProgress * 1.0));
