@@ -799,11 +799,16 @@
                 }
                 .hero-wrapper {
                     margin-top: 10px;
-                    height: calc(100dvh - 20px);
+                    height: calc(100dvh - 20px + env(safe-area-inset-bottom));
                 }
                 nav {
-                    top: env(safe-area-inset-top);
-                    padding-top: 22px;
+                    top: 0;
+                    padding-top: calc(22px + env(safe-area-inset-top));
+                }
+                .hero-content {
+                    justify-content: flex-start;
+                    padding-top: calc(120px + env(safe-area-inset-top));
+                    padding-bottom: calc(32px + env(safe-area-inset-bottom));
                 }
             }
         }
