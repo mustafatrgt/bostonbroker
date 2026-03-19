@@ -709,7 +709,7 @@
         @media (max-width: 992px) {
             .hero-wrapper {
                 min-height: 0;
-                height: calc(100svh - 28px);
+                height: calc(var(--app-height, 100svh) - 20px);
                 margin: 10px;
                 border-radius: 30px;
             }
@@ -747,7 +747,7 @@
         @media (max-width: 768px) {
             .hero-wrapper {
                 min-height: 0;
-                height: calc(100svh - 28px);
+                height: calc(var(--app-height, 100svh) - 20px);
                 margin: 10px;
                 border-radius: 24px;
             }
@@ -799,7 +799,7 @@
             @media (max-width: 992px) {
                 .hero-wrapper {
                     min-height: 0;
-                    height: calc(100svh - 28px);
+                    height: calc(var(--app-height, 100svh) - 20px);
                 }
                 nav {
                     top: 0;
@@ -1314,9 +1314,21 @@
         lenis.on('scroll', ScrollTrigger.update);
         gsap.ticker.add((time)=>{ lenis.raf(time * 1000) });
         gsap.ticker.lagSmoothing(0);
-        gsap.registerPlugin(ScrollTrigger);
-
         document.addEventListener("DOMContentLoaded", () => {
+            const syncAppHeight = () => {
+                const viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+                document.documentElement.style.setProperty("--app-height", `${viewportHeight}px`);
+            };
+
+            syncAppHeight();
+            window.addEventListener("resize", syncAppHeight);
+            window.addEventListener("orientationchange", syncAppHeight);
+            if (window.visualViewport) {
+                window.visualViewport.addEventListener("resize", syncAppHeight);
+                window.visualViewport.addEventListener("scroll", syncAppHeight);
+            }
+
+            gsap.registerPlugin(ScrollTrigger);
             // Date/Time pickers (English format, consistent UI)
             const setupDateYearSelect = (instance) => {
                 const yearInput = instance.currentYearElement;
