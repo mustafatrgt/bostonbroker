@@ -798,8 +798,8 @@
         @supports (padding-top: env(safe-area-inset-top)) {
             @media (max-width: 992px) {
                 .hero-wrapper {
-                    min-height: calc(100svh - 30px);
-                    height: auto;
+                    min-height: 0;
+                    height: calc(var(--app-height, 100svh) - 50px);
                 }
                 nav {
                     top: 0;
