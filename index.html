@@ -791,6 +791,14 @@
         /* iOS Safari: allow hero to extend under the status bar area */
         @supports (padding-top: env(safe-area-inset-top)) {
             @media (max-width: 992px) {
+                html {
+                    background-color: #143e72;
+                }
+                body {
+                    background:
+                        linear-gradient(135deg, #1f5d98 0%, #143e72 100%) top / 100% calc(env(safe-area-inset-top) + 32px) no-repeat,
+                        var(--white);
+                }
                 .hero-wrapper {
                     margin-top: calc(10px - env(safe-area-inset-top));
                     height: calc(100dvh - 20px + env(safe-area-inset-top));
