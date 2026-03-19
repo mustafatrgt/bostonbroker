@@ -2,17 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="description" content="Request private transportation in Boston through a trusted transportation broker. We connect travelers and businesses with licensed third-party providers for airport transfers, private rides, and corporate transportation.">
     <title>Boston Private Transportation Booking | Airport Transfers, Private Rides & Corporate Transportation</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=4">
-    <link rel="shortcut icon" href="/favicon.ico">
-    <link rel="mask-icon" href="/favicon-monochrome.svg?v=2" color="#0D3C74">
-    <link rel="manifest" href="/site.webmanifest">
+    <link rel="icon" href="/favicon.ico?v=6" sizes="any">
+    <link rel="shortcut icon" href="/favicon.ico?v=6">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=6">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=6">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=6">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=6">
+    <link rel="mask-icon" href="/favicon-monochrome.svg?v=6" color="#0D3C74">
+    <link rel="manifest" href="/site.webmanifest?v=6">
     <meta name="theme-color" content="#0054a8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -783,6 +786,19 @@
             .promo-feature-stage .feature-card { padding: 22px; border-radius: 22px; }
             .footer-bottom-flex { flex-direction: column; gap: 15px; text-align: left; align-items: flex-start; }
             .footer-links-right { width: 100%; justify-content: space-between; }
+        }
+
+        /* iOS Safari: allow hero to extend under the status bar area */
+        @supports (padding-top: env(safe-area-inset-top)) {
+            @media (max-width: 992px) {
+                .hero-wrapper {
+                    margin-top: calc(10px - env(safe-area-inset-top));
+                    height: calc(100dvh - 20px + env(safe-area-inset-top));
+                }
+                nav {
+                    padding-top: calc(22px + env(safe-area-inset-top));
+                }
+            }
         }
     </style>
 </head>
